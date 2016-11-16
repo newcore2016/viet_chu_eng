@@ -23,6 +23,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         drawView.frame = CGRect(x: self.view.frame.width * 2 / 10, y: 0, width: self.view.frame.width * 6.5 / 10, height: self.view.frame.height)
+//        let paperView = UIImageView(frame: drawView.frame)
+//        paperView.image = UIImage(named: "paper")
+//        drawView.addSubview(paperView)
+        self.drawView.backgroundColor = UIColor(patternImage: UIImage(named: "paper")!)
         self.createDrawView()
         self.view.addSubview(drawView)
         
@@ -178,7 +182,7 @@ class ViewController: UIViewController {
 //        drawView.pointArrays = alphabetArray[selectedIndex].pointArrays
 //        drawView.arrows = alphabetArray[selectedIndex].arrows
         
-        drawView.backgroundColor = UIColor.green
+//        drawView.backgroundColor = UIColor.green
         drawView.setOriginal(tmpPath.cgPath)
         drawView.setNeedsDisplay()
     }

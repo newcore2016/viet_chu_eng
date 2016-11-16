@@ -117,15 +117,14 @@ class DrawView: UIView {
         context!.setLineCap(.round)
         //        context!.setLineJoin(.bevel)
         
+//        context!.setStrokeColor(UIColor.red.cgColor)
         if originalPath != nil {
-            context!.setLineWidth(1)
-            context!.setLineDash(phase: 1, lengths: [])
+            context!.setLineWidth(3)
             context?.addPath(originalPath)
             context!.strokePath()
         }
         context!.setLineWidth(2)
-        context!.setLineDash(phase: 2, lengths: [])
-        context!.setStrokeColor(UIColor.yellow.cgColor)
+        context!.setStrokeColor(UIColor.purple.cgColor)
         let arrow = arrows.first
         if arrow != nil {
             //            print(arrow)
@@ -142,12 +141,9 @@ class DrawView: UIView {
         context!.setLineWidth(5)
         context!.setStrokeColor(UIColor.blue.cgColor)
         var points = pointArrays.first
+        var fPoint: CGPoint!
         if points != nil {
-            context!.setStrokeColor(UIColor.yellow.cgColor)
-            let fPoint = points?.remove(at: 0)
-            context!.move(to: fPoint!)
-            context!.addLine(to: fPoint!)
-            context!.strokePath()
+            fPoint = points?.remove(at: 0)
             context!.setStrokeColor(UIColor.blue.cgColor)
             for point in points! {
                 context!.move(to: point)
@@ -164,6 +160,13 @@ class DrawView: UIView {
             context!.addLine(to: line.endPoint)
         }
         context!.strokePath()
+        if fPoint != nil {
+            context!.setStrokeColor(UIColor.purple.cgColor)
+            context!.setLineWidth(10)
+            context!.move(to: fPoint!)
+            context!.addLine(to: fPoint!)
+            context!.strokePath()
+        }
     }
     
 }
