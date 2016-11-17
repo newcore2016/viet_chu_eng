@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0L3-Jo-MCv">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="djW-by-907">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +19,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -26,6 +27,86 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="442" y="104"/>
+        </scene>
+        <!--Main MenuVC-->
+        <scene sceneID="TSe-lp-N6M">
+            <objects>
+                <viewController id="djW-by-907" customClass="MainMenuVC" customModule="viet_chu" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1lT-Iv-MXp"/>
+                        <viewControllerLayoutGuide type="bottom" id="9A5-gg-e4i"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Kwr-Zr-ySD">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkE-el-yPI">
+                                <rect key="frame" x="281" y="70" width="105" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="5Lz-iC-k6m"/>
+                                    <constraint firstAttribute="height" constant="90" id="a0q-iu-ADM"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="90" id="nNc-5D-4IQ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="105" id="pn5-Qs-jpO"/>
+                                </constraints>
+                                <state key="normal" title="Number 0...9"/>
+                                <connections>
+                                    <action selector="numberBtnPressed:" destination="djW-by-907" eventType="touchUpInside" id="XfG-kf-cwY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Arf-vk-SpW">
+                                <rect key="frame" x="141" y="190" width="105" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="C0P-Wx-bPN"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="90" id="Nl8-Jr-xbJ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="105" id="foC-ov-woS"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="90" id="wV1-pu-Tck"/>
+                                    <constraint firstAttribute="height" constant="90" id="z0g-xW-85t"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="105" id="zyl-Of-eOH"/>
+                                </constraints>
+                                <state key="normal" title="Alphabet a...z"/>
+                                <connections>
+                                    <action selector="alphabetLowBtnPressed:" destination="djW-by-907" eventType="touchUpInside" id="IHW-IS-adw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wgL-Wx-t5s">
+                                <rect key="frame" x="427" y="190" width="105" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="90" id="00v-Fk-RfD"/>
+                                    <constraint firstAttribute="width" constant="105" id="APZ-Sc-7x1"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="90" id="PJ1-GK-PEA"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="105" id="QRD-mq-2pc"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="105" id="cDW-8k-ed0"/>
+                                    <constraint firstAttribute="height" constant="90" id="oh4-OK-OZA"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="90" id="uEr-Ei-8y7"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="105" id="zrK-mP-BIU"/>
+                                </constraints>
+                                <state key="normal" title="Alphabet A...Z"/>
+                                <connections>
+                                    <action selector="alphebetUpBtnPressed:" destination="djW-by-907" eventType="touchUpInside" id="RPs-Cu-jCk"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Arf-vk-SpW" firstAttribute="leading" secondItem="Kwr-Zr-ySD" secondAttribute="leadingMargin" constant="121" id="0B4-vY-Ro8"/>
+                            <constraint firstItem="dkE-el-yPI" firstAttribute="centerX" secondItem="Kwr-Zr-ySD" secondAttribute="centerX" id="Wvf-tI-3jH"/>
+                            <constraint firstItem="Arf-vk-SpW" firstAttribute="top" secondItem="1lT-Iv-MXp" secondAttribute="bottom" constant="170" id="ZtX-q3-ajh"/>
+                            <constraint firstItem="wgL-Wx-t5s" firstAttribute="leading" secondItem="Arf-vk-SpW" secondAttribute="trailing" constant="181" id="aaZ-Q1-9lV"/>
+                            <constraint firstItem="dkE-el-yPI" firstAttribute="top" secondItem="1lT-Iv-MXp" secondAttribute="bottom" constant="50" id="gee-BR-V5s"/>
+                            <constraint firstItem="wgL-Wx-t5s" firstAttribute="top" secondItem="1lT-Iv-MXp" secondAttribute="bottom" constant="170" id="hTv-Go-brp"/>
+                            <constraint firstItem="wgL-Wx-t5s" firstAttribute="leading" secondItem="Arf-vk-SpW" secondAttribute="trailing" constant="181" id="z9t-jK-tPz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="alphabetUpBtn" destination="wgL-Wx-t5s" id="2es-rc-Okx"/>
+                        <outlet property="alphebetLowBtn" destination="Arf-vk-SpW" id="d45-sR-Ocx"/>
+                        <outlet property="numberBtn" destination="dkE-el-yPI" id="PSd-hR-jdc"/>
+                        <segue destination="0L3-Jo-MCv" kind="showDetail" identifier="MenuSegue" id="G0b-GN-DOD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bUH-2s-541" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1260.7196401799101" y="103.2"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="NrD-Px-gqx">
@@ -36,7 +117,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Hfb-U6-Uvr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="iHw-Qa-cmC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

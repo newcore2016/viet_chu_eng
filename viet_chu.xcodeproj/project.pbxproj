@@ -15,10 +15,8 @@
 		115E26A51DD3070F00A4D3E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 115E26A41DD3070F00A4D3E5 /* Assets.xcassets */; };
 		115E26A81DD3070F00A4D3E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 115E26A61DD3070F00A4D3E5 /* LaunchScreen.storyboard */; };
 		11A247271DD31BAF006104F2 /* SVGPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A247261DD31BAF006104F2 /* SVGPath.swift */; };
-		11A694CC1DD57267006CDF27 /* Monaco.dfont in Resources */ = {isa = PBXBuildFile; fileRef = 11A694CB1DD57267006CDF27 /* Monaco.dfont */; };
+		11DB8DC01DDD685F00F29A51 /* MainMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DB8DBF1DDD685F00F29A51 /* MainMenuVC.swift */; };
 		11E3463C1DDC35A700CE66AA /* PENMP.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 11E3463B1DDC35A700CE66AA /* PENMP.TTF */; };
-		11F65A751DD466E400B47A46 /* HLHOCTRO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 11F65A741DD466E400B47A46 /* HLHOCTRO.TTF */; };
-		11F65A771DD46F9100B47A46 /* VNARIS.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 11F65A761DD46F9100B47A46 /* VNARIS.TTF */; };
 		84298F861DD9700600145796 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84298F851DD9700600145796 /* MenuViewController.swift */; };
 		84298F881DD9A4B100145796 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84298F871DD9A4B100145796 /* DrawView.swift */; };
 		84298F8D1DD9A4D100145796 /* Alphabet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84298F891DD9A4D100145796 /* Alphabet.swift */; };
@@ -39,10 +37,8 @@
 		115E26A91DD3070F00A4D3E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11A247251DD31BAF006104F2 /* SVGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPath.h; sourceTree = "<group>"; };
 		11A247261DD31BAF006104F2 /* SVGPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGPath.swift; sourceTree = "<group>"; };
-		11A694CB1DD57267006CDF27 /* Monaco.dfont */ = {isa = PBXFileReference; lastKnownFileType = file; path = Monaco.dfont; sourceTree = "<group>"; };
+		11DB8DBF1DDD685F00F29A51 /* MainMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuVC.swift; sourceTree = "<group>"; };
 		11E3463B1DDC35A700CE66AA /* PENMP.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = PENMP.TTF; sourceTree = "<group>"; };
-		11F65A741DD466E400B47A46 /* HLHOCTRO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLHOCTRO.TTF; sourceTree = "<group>"; };
-		11F65A761DD46F9100B47A46 /* VNARIS.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = VNARIS.TTF; sourceTree = "<group>"; };
 		84298F851DD9700600145796 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		84298F871DD9A4B100145796 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		84298F891DD9A4D100145796 /* Alphabet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alphabet.swift; sourceTree = "<group>"; };
@@ -84,10 +80,7 @@
 				113155CD1DDAB3CB0091A034 /* Schoolnet5HN.ttf */,
 				115E269A1DD3070F00A4D3E5 /* AppDelegate.swift */,
 				115E269C1DD3070F00A4D3E5 /* ViewController.swift */,
-				11A694CB1DD57267006CDF27 /* Monaco.dfont */,
 				11E3463B1DDC35A700CE66AA /* PENMP.TTF */,
-				11F65A761DD46F9100B47A46 /* VNARIS.TTF */,
-				11F65A741DD466E400B47A46 /* HLHOCTRO.TTF */,
 				11A247251DD31BAF006104F2 /* SVGPath.h */,
 				11A247261DD31BAF006104F2 /* SVGPath.swift */,
 				115E269E1DD3070F00A4D3E5 /* Main.storyboard */,
@@ -101,6 +94,7 @@
 				84298F8B1DD9A4D100145796 /* Extension.swift */,
 				84298F8C1DD9A4D100145796 /* Line.swift */,
 				84298F871DD9A4B100145796 /* DrawView.swift */,
+				11DB8DBF1DDD685F00F29A51 /* MainMenuVC.swift */,
 			);
 			path = viet_chu;
 			sourceTree = "<group>";
@@ -166,12 +160,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				115E26A81DD3070F00A4D3E5 /* LaunchScreen.storyboard in Resources */,
-				11F65A771DD46F9100B47A46 /* VNARIS.TTF in Resources */,
 				115E26A51DD3070F00A4D3E5 /* Assets.xcassets in Resources */,
 				115E26A01DD3070F00A4D3E5 /* Main.storyboard in Resources */,
-				11A694CC1DD57267006CDF27 /* Monaco.dfont in Resources */,
 				11E3463C1DDC35A700CE66AA /* PENMP.TTF in Resources */,
-				11F65A751DD466E400B47A46 /* HLHOCTRO.TTF in Resources */,
 				113155CE1DDAB3CB0091A034 /* Schoolnet5HN.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,6 +180,7 @@
 				84298F861DD9700600145796 /* MenuViewController.swift in Sources */,
 				84298F881DD9A4B100145796 /* DrawView.swift in Sources */,
 				11A247271DD31BAF006104F2 /* SVGPath.swift in Sources */,
+				11DB8DC01DDD685F00F29A51 /* MainMenuVC.swift in Sources */,
 				84298F8D1DD9A4D100145796 /* Alphabet.swift in Sources */,
 				115E26A31DD3070F00A4D3E5 /* viet_chu.xcdatamodeld in Sources */,
 				115E269B1DD3070F00A4D3E5 /* AppDelegate.swift in Sources */,

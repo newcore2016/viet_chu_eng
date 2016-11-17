@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     var alphabetArray = [Alphabet]()
     var selectedIndex = 0
     let synthesizer = AVSpeechSynthesizer()
+    var penColorBtn = [UIButton]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,30 @@ class ViewController: UIViewController {
         originalView.backgroundColor = UIColor.white
         createOriginalView()
         leftMenu.addSubview(originalView)
+        
+        // Add bảng màu
+        let redBtn = UIButton(frame: CGRect(x: 15, y: originalView.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
+        redBtn.backgroundColor = UIColor.red
+        var changeColorGesture = UITapGestureRecognizer(target: self, action: #selector(self.changePenColor(_:)))
+        redBtn.addGestureRecognizer(changeColorGesture)
+        penColorBtn.append(redBtn)
+        leftMenu.addSubview(redBtn)
+        
+        let yellowBtn = UIButton(frame: CGRect(x: 5, y: redBtn.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
+        yellowBtn.backgroundColor = UIColor.yellow
+        changeColorGesture = UITapGestureRecognizer(target: self, action: #selector(self.changePenColor(_:)))
+        yellowBtn.addGestureRecognizer(changeColorGesture)
+        penColorBtn.append(yellowBtn)
+        leftMenu.addSubview(yellowBtn)
+        
+        let pinkBtn = UIButton(frame: CGRect(x: 5, y: yellowBtn.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
+        pinkBtn.backgroundColor = UIColor.orange
+        changeColorGesture = UITapGestureRecognizer(target: self, action: #selector(self.changePenColor(_:)))
+        pinkBtn.addGestureRecognizer(changeColorGesture)
+        penColorBtn.append(pinkBtn)
+        leftMenu.addSubview(pinkBtn)
+        
+        
         // Logo game
         let logoGame = UILabel(frame: CGRect(x: 0, y: leftMenu.frame.height - 50, width: leftMenu.frame.width, height: 40 ))
         logoGame.textAlignment = .center
@@ -117,9 +142,11 @@ class ViewController: UIViewController {
     func talkBtnPressed() {
         // talk
         let utterance = AVSpeechUtterance(string: alphabetArray[selectedIndex].unicode)
-        utterance.voice = AVSpeechSynthesisVoice(language: "vn")
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = 0.3
         synthesizer.stopSpeaking(at: .immediate)
         synthesizer.speak(utterance)
+        drawView.currenColor = UIColor.purple
         
     }
     
@@ -135,21 +162,19 @@ class ViewController: UIViewController {
         drawView.character = alphabetArray[selectedIndex].unicode
         drawView.lines = [Line]()
         let tmpPath = UIBezierPath()
-        tmpPath.append(alphabetArray[selectedIndex].path) // TODO get from an array
-        print(tmpPath)
-//        let trans2 = CGAffineTransform(scaleX: 8, y: 8)
-//        tmpPath.apply(trans2)
-//        let widthRatio = (drawView.frame.width - 40) / tmpPath.bounds.width
-//        let heightRatio = (drawView.frame.height - 40) / tmpPath.bounds.height
-//        var scaleRatio: CGFloat!
-//        if widthRatio > heightRatio {
-//            scaleRatio = heightRatio
-//        } else {
-//            scaleRatio = widthRatio
-//        }
-//        let trans2 = CGAffineTransform(scaleX: scaleRatio, y: scaleRatio)
-//        tmpPath.apply(trans2)
-        drawView.pointArrays = alphabetArray[selectedIndex].pointArrays // TODO get from an array
+        tmpPath.append(alphabetArray[selectedIndex].path)
+        let widthRatio = (drawView.frame.width - 40) / tmpPath.bounds.width
+        let heightRatio = (drawView.frame.height - 40) / tmpPath.bounds.height
+        var scaleRatio: CGFloat!
+        if widthRatio > heightRatio {
+            scaleRatio = heightRatio
+        } else {
+            scaleRatio = widthRatio
+        }
+        let trans2 = CGAffineTransform(scaleX: scaleRatio, y: scaleRatio)
+        drawView.drawWidth = 20 * scaleRatio
+        tmpPath.apply(trans2)
+        drawView.pointArrays = alphabetArray[selectedIndex].pointArrays
         
         let transX = drawView.frame.width / 2 - tmpPath.bounds.midX
         let transY = drawView.frame.height / 2 - tmpPath.bounds.midY
@@ -160,8 +185,8 @@ class ViewController: UIViewController {
         for points in alphabetArray[selectedIndex].pointArrays {
             var newPoints = [CGPoint]()
             for point in points {
-                var point2 = point.applying(trans)
-//                point2 = point2.applying(trans)
+                var point2 = point.applying(trans2)
+                point2 = point2.applying(trans)
                 newPoints.append(point2)
             }
             newPointArrays.append(newPoints)
@@ -171,18 +196,13 @@ class ViewController: UIViewController {
         for arrow in alphabetArray[selectedIndex].arrows {
             let newArrow = UIBezierPath()
             newArrow.append(arrow)
-//            newArrow.apply(trans2)
+            newArrow.apply(trans2)
             newArrow.apply(trans)
             newArrows.append(newArrow)
         }
         drawView.arrows = newArrows
         drawView.pointArrays = newPointArrays
-//                drawView.addLabel()
         
-//        drawView.pointArrays = alphabetArray[selectedIndex].pointArrays
-//        drawView.arrows = alphabetArray[selectedIndex].arrows
-        
-//        drawView.backgroundColor = UIColor.green
         drawView.setOriginal(tmpPath.cgPath)
         drawView.setNeedsDisplay()
     }
@@ -204,6 +224,16 @@ class ViewController: UIViewController {
         tmpPath.apply(trans1)
         originalView.image = ViewController.convertPathsToImage(paths: [tmpPath])
         originalView.contentMode = .topLeft
+    }
+    
+    func changePenColor(_ sender: UITapGestureRecognizer) {
+        print("changeColor")
+        let button = sender.view as! UIButton
+        drawView.currenColor = button.backgroundColor!
+        for btn in penColorBtn {
+            btn.frame.origin = CGPoint(x: 5, y: btn.frame.origin.y)
+        }
+        button.frame.origin = CGPoint(x: 15, y: button.frame.origin.y)
     }
     
     // convert path to image

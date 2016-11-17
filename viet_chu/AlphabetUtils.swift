@@ -14,7 +14,7 @@ class AlphabetUtils {
     
     class func getAlphabet(unicode: String) -> Alphabet {
         let alphabet = Alphabet()
-        alphabet.unicode = unicode
+        alphabet.unicode = unicode.lowercased()
         alphabet.path = AlphabetUtils.getCharacter(unicode)
         switch (unicode) {
         // TODO create swtch - case for all characters
@@ -96,6 +96,36 @@ class AlphabetUtils {
         case "z":
             alphabet.pointArrays = AlphabetUtils.getZPoints()
             alphabet.arrows = AlphabetUtils.getZArows()
+        case "0":
+            alphabet.pointArrays = AlphabetUtils.get0Points()
+            alphabet.arrows = AlphabetUtils.get0Arows()
+        case "1":
+            alphabet.pointArrays = AlphabetUtils.get1Points()
+            alphabet.arrows = AlphabetUtils.get1Arows()
+        case "2":
+            alphabet.pointArrays = AlphabetUtils.get2Points()
+            alphabet.arrows = AlphabetUtils.get2Arows()
+        case "3":
+            alphabet.pointArrays = AlphabetUtils.get3Points()
+            alphabet.arrows = AlphabetUtils.get3Arows()
+        case "4":
+            alphabet.pointArrays = AlphabetUtils.get4Points()
+            alphabet.arrows = AlphabetUtils.get4Arows()
+        case "5":
+            alphabet.pointArrays = AlphabetUtils.get5Points()
+            alphabet.arrows = AlphabetUtils.get5Arows()
+        case "6":
+            alphabet.pointArrays = AlphabetUtils.get6Points()
+            alphabet.arrows = AlphabetUtils.get6Arows()
+        case "7":
+            alphabet.pointArrays = AlphabetUtils.get7Points()
+            alphabet.arrows = AlphabetUtils.get7Arows()
+        case "8":
+            alphabet.pointArrays = AlphabetUtils.get8Points()
+            alphabet.arrows = AlphabetUtils.get8Arows()
+        case "9":
+            alphabet.pointArrays = AlphabetUtils.get9Points()
+            alphabet.arrows = AlphabetUtils.get9Arows()
         default:
             break
         }
@@ -998,6 +1028,218 @@ class AlphabetUtils {
         path.apply(translate)
         print("\(character) \(path.bounds)")
         return path
+    }
+    
+    class func get0Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 105.6, y: 18.5))
+        array1.append(CGPoint(x: 46.1, y: 114.0))
+        array1.append(CGPoint(x: 105.6, y: 226.0))
+        array1.append(CGPoint(x: 165.1, y: 112.5))
+        array1.append(CGPoint(x: 105.6, y: 18.5))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get0Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 105.6, y: 18.5)	, to:	CGPoint(x: 81.1, y: 26.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        return arrows
+    }
+    
+    class func get1Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 56.6, y: 71.0))
+        array1.append(CGPoint(x: 108.1, y: 19.0))
+        array1.append(CGPoint(x: 105.1, y: 121.5))
+        array1.append(CGPoint(x: 105.1, y: 224.5))
+        pointArrays.append(array1)
+        array1 = [CGPoint]()
+        array1.append(CGPoint(x: 64.1, y: 226.0))
+        array1.append(CGPoint(x: 145.1, y: 226))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get1Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 56.6, y: 71.0)	, to:	CGPoint(x: 82.6, y: 48.0)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        let arrowPath1 = UIBezierPath.arrow(from:	CGPoint(x: 64.1, y: 226.0)	, to:	CGPoint(x: 94.1, y: 226.0)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath1)
+        return arrows
+    }
+    
+    class func get2Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 52.1, y: 78.5))
+        array1.append(CGPoint(x: 104.6, y: 17.5))
+        array1.append(CGPoint(x: 146.6, y: 110.5))
+        array1.append(CGPoint(x: 56.6, y: 225.0))
+        array1.append(CGPoint(x: 159.1, y: 225.0))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get2Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 52.1, y: 78.5)	, to:	CGPoint(x: 57.6, y: 49.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        return arrows
+    }
+    
+    class func get3Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 44.1, y: 19.5))
+        array1.append(CGPoint(x: 150.6, y: 20.0))
+        array1.append(CGPoint(x: 68.6, y: 111.5))
+        array1.append(CGPoint(x: 164.6, y: 168.0))
+        array1.append(CGPoint(x: 39.6, y: 206.5))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get3Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 44.1, y: 19.5)	, to:	CGPoint(x: 82.1, y: 19.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        return arrows
+    }
+    
+    class func get4Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 135.1, y: 19.5))
+        array1.append(CGPoint(x: 36.1, y: 166.5))
+        array1.append(CGPoint(x: 164.6, y: 165.5))
+        pointArrays.append(array1)
+        array1 = [CGPoint]()
+        array1.append(CGPoint(x: 132.6, y: 19.5))
+        array1.append(CGPoint(x: 132.6, y: 119.0))
+        array1.append(CGPoint(x: 132.6, y: 226.0))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get4Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 135.1, y: 19.5)	, to:	CGPoint(x: 109.1, y: 55.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        let arrowPath1 = UIBezierPath.arrow(from:	CGPoint(x: 132.6, y: 19.5)	, to:	CGPoint(x: 132.6, y: 67.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath1)
+        return arrows
+    }
+    
+    class func get5Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 54.1, y: 21.0))
+        array1.append(CGPoint(x: 51.6, y: 117.5))
+        array1.append(CGPoint(x: 164.1, y: 171.5))
+        array1.append(CGPoint(x: 38.6, y: 206.5))
+        pointArrays.append(array1)
+        array1 = [CGPoint]()
+        array1.append(CGPoint(x: 54.1, y: 21.0))
+        array1.append(CGPoint(x: 152.1, y: 19.5))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get5Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 54.1, y: 21.0)	, to:	CGPoint(x: 53.1, y: 48.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        let arrowPath1 = UIBezierPath.arrow(from:	CGPoint(x: 54.1, y: 21.0)	, to:	CGPoint(x: 80.6, y: 20.0)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath1)
+        return arrows
+    }
+    
+    class func get6Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 145.6, y: 16.0))
+        array1.append(CGPoint(x: 55.6, y: 134.0))
+        array1.append(CGPoint(x: 105.6, y: 225.5))
+        array1.append(CGPoint(x: 158.6, y: 140.0))
+        array1.append(CGPoint(x: 85.1, y: 111.5))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get6Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 145.6, y: 16.0)	, to:	CGPoint(x: 119.6, y: 50.0)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        return arrows
+    }
+    
+    class func get7Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 39.1, y: 21.5))
+        array1.append(CGPoint(x: 159.1, y: 20.5))
+        array1.append(CGPoint(x: 116.1, y: 113.0))
+        array1.append(CGPoint(x: 61.6, y: 227.5))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get7Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 39.1, y: 21.5)	, to:	CGPoint(x: 88.1, y: 21.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        return arrows
+    }
+    
+    class func get8Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 105.6, y: 19.0))
+        array1.append(CGPoint(x: 51.1, y: 60.5))
+        array1.append(CGPoint(x: 105.6, y: 113.0))
+        array1.append(CGPoint(x: 161.1, y: 60.5))
+        array1.append(CGPoint(x: 105.6, y: 19.0))
+        pointArrays.append(array1)
+        array1 = [CGPoint]()
+        array1.append(CGPoint(x: 105.6, y: 113.0))
+        array1.append(CGPoint(x: 46.6, y: 172.5))
+        array1.append(CGPoint(x: 105.6, y: 227.0))
+        array1.append(CGPoint(x: 163.6, y: 172.5))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get8Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 105.6, y: 19.0)	, to:	CGPoint(x: 78.1, y: 25.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        let arrowPath1 = UIBezierPath.arrow(from:	CGPoint(x: 105.6, y: 113.0)	, to:	CGPoint(x: 69.6, y: 125.5)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath1)
+        return arrows
+    }
+    
+    class func get9Points()->[[CGPoint]]{
+        var pointArrays = [[CGPoint]]()
+        var array1 = [CGPoint]()
+        array1.append(CGPoint(x: 155.1, y: 111.5))
+        array1.append(CGPoint(x: 105.1, y: 19.0))
+        array1.append(CGPoint(x: 55.6, y: 111.5))
+        array1.append(CGPoint(x: 155.1, y: 111.5))
+        array1.append(CGPoint(x: 66.6, y: 227.5))
+        pointArrays.append(array1)
+        return pointArrays
+    }
+    
+    class func get9Arows() -> [UIBezierPath] {
+        var arrows = [UIBezierPath]()
+        let arrowPath = UIBezierPath.arrow(from:	CGPoint(x: 155.1, y: 111.5)	, to:	CGPoint(x: 165.6, y: 83.0)	, tailWidth: 1, headWidth: 6, headLength: 6)
+        arrows.append(arrowPath)
+        return arrows
     }
     
 }

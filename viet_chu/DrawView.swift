@@ -22,13 +22,8 @@ class DrawView: UIView {
     var arrows = [UIBezierPath]()
     var isCompleted = false
     let synthesizer = AVSpeechSynthesizer()
-    
-    func addLabel() {
-        label.text = "0,0"
-        label.adjustsFontSizeToFitWidth = true
-        label.frame = CGRect(x: 0, y: 0, width: 100, height: 20)
-        self.addSubview(label)
-    }
+    var drawWidth:CGFloat = 20
+    var currenColor = UIColor.red
     
     func setOriginal(_ path: CGPath){
         originalPath = path
@@ -41,7 +36,7 @@ class DrawView: UIView {
         lastPoint = touches.first?.location(in: self)
         drawPath.move(to: lastPoint)
         drawPath.addLine(to: lastPoint)
-        let line = Line(lastPoint, lastPoint!)
+        let line = Line(lastPoint, lastPoint!, currenColor.cgColor)
         lines.append(line)
         label.text = lastPoint.debugDescription
         print(lastPoint)
@@ -58,7 +53,7 @@ class DrawView: UIView {
         //            lastPoint = newPoint
         //            self.setNeedsDisplay()
         //        }
-        let line = Line(lastPoint, newPoint!)
+        let line = Line(lastPoint, newPoint!, currenColor.cgColor)
         drawPath.addLine(to: newPoint!)
         lines.append(line)
         lastPoint = newPoint
@@ -92,7 +87,8 @@ class DrawView: UIView {
             isCompleted = true
             // talk
             let utterance = AVSpeechUtterance(string: character)
-            utterance.voice = AVSpeechSynthesisVoice(language: "vn")
+            utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+            utterance.rate = 0.3
             synthesizer.stopSpeaking(at: .immediate)
             synthesizer.speak(utterance)
             conLabel.frame = CGRect(x: 0, y: 10, width: self.frame.width, height: 20)
@@ -115,7 +111,6 @@ class DrawView: UIView {
         let context = UIGraphicsGetCurrentContext()
         context!.beginPath()
         context!.setLineCap(.round)
-        //        context!.setLineJoin(.bevel)
         
 //        context!.setStrokeColor(UIColor.red.cgColor)
         if originalPath != nil {
@@ -123,20 +118,20 @@ class DrawView: UIView {
             context?.addPath(originalPath)
             context!.strokePath()
         }
+        
         context!.setLineWidth(2)
         context!.setStrokeColor(UIColor.purple.cgColor)
+        
         let arrow = arrows.first
         if arrow != nil {
             //            print(arrow)
-            UIColor.yellow.setFill()
+            UIColor.purple.setFill()
             arrow?.fill()
             context!.addPath((arrow?.cgPath)!)
             //            let xxPath = UIBezierPath.arrow(from: CGPoint(x: 0, y: 0), to: CGPoint(x: 100, y: 100), tailWidth: 1, headWidth: 10, headLength: 10)
             //            context!.addPath(xxPath.cgPath)
             context!.strokePath()
         }
-
-        
         
         context!.setLineWidth(5)
         context!.setStrokeColor(UIColor.blue.cgColor)
@@ -151,15 +146,15 @@ class DrawView: UIView {
                 context!.strokePath()
             }
         }
-        
-        context!.setStrokeColor(UIColor.red.cgColor)
-        
-        context!.setLineWidth(20)
+
+        context!.setLineWidth(drawWidth)
         for line in lines {
+            context!.setStrokeColor(line.color)
             context!.move(to: line.startPoint)
             context!.addLine(to: line.endPoint)
+            context!.strokePath()
         }
-        context!.strokePath()
+        
         if fPoint != nil {
             context!.setStrokeColor(UIColor.purple.cgColor)
             context!.setLineWidth(10)

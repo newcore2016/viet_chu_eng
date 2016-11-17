@@ -23,6 +23,8 @@ class MenuViewController: UIViewController {
     
     var selectedIndex = 0
     
+    var selectedTable = 2
+    
     let synthesizer = AVSpeechSynthesizer()
 
     override func viewDidLoad() {
@@ -35,8 +37,17 @@ class MenuViewController: UIViewController {
         //load character
         let engTable: String = "abcdefghijklmnopqrstuvwxyz"
         let ENGTable: String = engTable.uppercased()
-        let alphabetTable = engTable
-        for i in 0...25 {
+        let numberTable: String = "0123456789"
+        var alphabetTable: String!
+        if selectedTable == 0 {
+            alphabetTable = engTable
+        } else if selectedTable == 1 {
+            alphabetTable = ENGTable
+        } else if selectedTable == 2 {
+            alphabetTable = numberTable
+        }
+        
+        for i in 0..<alphabetTable.characters.count {
             let r = alphabetTable.index(alphabetTable.startIndex, offsetBy: i)
             let sub = alphabetTable[r]
             characterArray.append("\(sub)")
@@ -51,33 +62,13 @@ class MenuViewController: UIViewController {
         let width = (boardGame.frame.width) / charEachRow
         let height:CGFloat = 80
         
-        for i in 0...25 {
+        for i in 0..<characterArray.count {
             
             let alphabetBtn = UIButton()
             
             alphabetBtn.frame = CGRect(x: (colCount - 1) * width, y: height * (rowCount - 1) , width: width, height: height)
-//            alphabetBtn.layer.borderWidth = 3
-//            alphabetBtn.layer.borderColor = UIColor(red:222/255.0, green:225/255.0, blue:227/255.0, alpha: 1.0).cgColor
             let alphabet = AlphabetUtils.getAlphabet(unicode: characterArray[i])
-            var tmpPath = alphabet.path
-//            let widthRatio = (width - 5) / tmpPath.bounds.width
-//            let heightRatio = (height - 5) / tmpPath.bounds.height
-//            let cellHeight:CGFloat = 25
-//            var scaleRatio: CGFloat!
-//            if widthRatio > heightRatio {
-//                scaleRatio = heightRatio
-//            } else {
-//                scaleRatio = widthRatio
-//            }
-//            let trans2 = CGAffineTransform(scaleX: 1/8, y: widthRatio)
-//            tmpPath.apply(trans2)
-//            let trans1 = CGAffineTransform(translationX: width/2 - tmpPath.bounds.midX, y: 50 - tmpPath.bounds.maxY)
-//            tmpPath.apply(trans1)
-            
-            
-//            alphabetBtn.setImage(ViewController.convertPathsToImage(paths: [tmpPath]), for: .normal)
-//            alphabetBtn.contentMode =
-            
+
             alphabetBtn.titleLabel!.font = font
             alphabetBtn.titleLabel?.textAlignment = .center
             alphabetBtn.titleLabel?.frame = alphabetBtn.frame
@@ -87,11 +78,9 @@ class MenuViewController: UIViewController {
             alphabetBtn.setBackgroundImage(btnImage2, for: .selected)
             alphabetBtn.setTitle(characterArray[i], for: .normal)
             alphabetBtn.setTitleColor(UIColor.red, for: .normal)
-//            alphabetBtn.addTarget(self, action: #selector, for: .touchUpInside)
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.btnPressed(_:)))
             alphabetBtn.addGestureRecognizer(tapGesture)
             alphabetBtn.isUserInteractionEnabled = true
-//            alphabetBtn.isSelected = true
             alphabetBtn.tag = i
             alphabetArray.append(alphabet)
             boardGame.addSubview(alphabetBtn)
@@ -122,16 +111,19 @@ class MenuViewController: UIViewController {
         self.view.addSubview(logo)
         
         //play button
-        let playBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.05 , width: 80, height: 30))
-        playBtn.setTitle("Viết chữ", for: .normal)
-        playBtn.backgroundColor = UIColor.purple
+        let playBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.03 , width: 80, height: 50))
+//        playBtn.setTitle("Viết chữ", for: .normal)
+//        playBtn.backgroundColor = UIColor.purple
+        playBtn.setImage(UIImage(named: "penButton"), for: .normal)
         playBtn.addTarget(self, action: #selector(self.playBtnPressed), for: .touchUpInside)
         self.view.addSubview(playBtn)
         
         //back button
         let backBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.85 , width: 80, height: 30))
-        backBtn.setTitle("Quay lại", for: .normal)
-        backBtn.backgroundColor = UIColor.purple
+//        backBtn.setTitle("Quay lại", for: .normal)
+//        backBtn.backgroundColor = UIColor.purple
+        backBtn.addTarget(self, action: #selector(self.backBtnPressed), for: .touchUpInside)
+        backBtn.setImage(UIImage(named: "close"), for: .normal)
         self.view.addSubview(backBtn)
     }
     
@@ -146,14 +138,19 @@ class MenuViewController: UIViewController {
         selectedIndex = button.tag
         
         // talk
-        let utterance = AVSpeechUtterance(string: (button.titleLabel?.text)!)
-        utterance.voice = AVSpeechSynthesisVoice(language: "vn-VN")
+        let utterance = AVSpeechUtterance(string: (button.titleLabel?.text)!.lowercased())
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = 0.3
         synthesizer.stopSpeaking(at: .immediate)
         synthesizer.speak(utterance)
     }
     
     func playBtnPressed() {
         performSegue(withIdentifier: "DrawSegue", sender: self)
+    }
+    
+    func backBtnPressed() {
+            self.dismiss(animated: true, completion: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
