@@ -16,7 +16,7 @@ class MainMenuVC: UIViewController {
     
     @IBOutlet weak var alphabetUpBtn: UIButton!
     
-    var selectedTable = 0
+    var selectedTable = Table.alphabetLower
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,17 +30,17 @@ class MainMenuVC: UIViewController {
     }
     
     @IBAction func numberBtnPressed(_ sender: Any) {
-        selectedTable = 2
+        selectedTable = Table.number
         self.performSegue(withIdentifier: "MenuSegue", sender: self)
     }
     
     @IBAction func alphabetLowBtnPressed(_ sender: Any) {
-        selectedTable = 0
+        selectedTable = Table.alphabetLower
         self.performSegue(withIdentifier: "MenuSegue", sender: self)
     }
     
     @IBAction func alphebetUpBtnPressed(_ sender: Any) {
-        selectedTable = 1
+        selectedTable = Table.alphabetUpper
         self.performSegue(withIdentifier: "MenuSegue", sender: self)
     }
     

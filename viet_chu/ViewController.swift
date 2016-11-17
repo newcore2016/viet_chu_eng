@@ -28,6 +28,7 @@ class ViewController: UIViewController {
 //        paperView.image = UIImage(named: "paper")
 //        drawView.addSubview(paperView)
         self.drawView.backgroundColor = UIColor(patternImage: UIImage(named: "paper")!)
+        drawView.setupSound()
         self.createDrawView()
         self.view.addSubview(drawView)
         

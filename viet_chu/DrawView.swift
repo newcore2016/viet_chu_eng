@@ -25,6 +25,18 @@ class DrawView: UIView {
     var drawWidth:CGFloat = 20
     var currenColor = UIColor.red
     
+    var bellSound: AVAudioPlayer!
+    
+    func setupSound() {
+        let path = Bundle.main.path(forResource: "bell", ofType: "wav")!
+        let url = URL(fileURLWithPath: path)
+        do {
+            bellSound = try AVAudioPlayer(contentsOf: url)
+        } catch {
+            print("Error loading bellSound")
+        }
+    }
+    
     func setOriginal(_ path: CGPath){
         originalPath = path
     }
@@ -64,6 +76,10 @@ class DrawView: UIView {
                 let point = pointArray[0]
                 if compareTwoPoint(point, newPoint!) {
                     print("Removed \(point)")
+                    if bellSound.isPlaying {
+                        bellSound.stop()
+                    }
+                    bellSound.play()
                     pointArray.remove(at: 0)
                     pointArrays[0] = pointArray
                     

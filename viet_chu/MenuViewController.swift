@@ -23,7 +23,7 @@ class MenuViewController: UIViewController {
     
     var selectedIndex = 0
     
-    var selectedTable = 2
+    var selectedTable: Table!
     
     let synthesizer = AVSpeechSynthesizer()
 
@@ -39,11 +39,11 @@ class MenuViewController: UIViewController {
         let ENGTable: String = engTable.uppercased()
         let numberTable: String = "0123456789"
         var alphabetTable: String!
-        if selectedTable == 0 {
+        if selectedTable == Table.alphabetLower {
             alphabetTable = engTable
-        } else if selectedTable == 1 {
+        } else if selectedTable == Table.alphabetUpper {
             alphabetTable = ENGTable
-        } else if selectedTable == 2 {
+        } else if selectedTable == Table.number {
             alphabetTable = numberTable
         }
         
