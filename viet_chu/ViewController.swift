@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     var selectedIndex = 0
     let synthesizer = AVSpeechSynthesizer()
     var penColorBtn = [UIButton]()
+    var closeSound: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,7 +153,20 @@ class ViewController: UIViewController {
     }
     
     func backBtnPressed() {
+        self.playCloseSound()
         dismiss(animated: true, completion: nil)
+    }
+    
+    // play close sound
+    func playCloseSound() {
+        let path = Bundle.main.path(forResource: "close", ofType: "wav")!
+        let closeUrl = URL(fileURLWithPath: path)
+        do {
+            closeSound = try AVAudioPlayer(contentsOf: closeUrl)
+            closeSound.play()
+        } catch (let err as NSError) {
+            print(err.debugDescription)
+        }
     }
     
     // create draw view

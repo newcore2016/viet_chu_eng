@@ -18,7 +18,6 @@ class DrawView: UIView {
     var drawPath = UIBezierPath()
     var pointArray = [CGPoint]()
     var pointArrays = [[CGPoint]]()
-    var label = UILabel()
     var arrows = [UIBezierPath]()
     var isCompleted = false
     let synthesizer = AVSpeechSynthesizer()
@@ -26,14 +25,15 @@ class DrawView: UIView {
     var currenColor = UIColor.red
     
     var bellSound: AVAudioPlayer!
+    var bellUrl: URL!
     
     func setupSound() {
         let path = Bundle.main.path(forResource: "bell", ofType: "wav")!
-        let url = URL(fileURLWithPath: path)
+        bellUrl = URL(fileURLWithPath: path)
         do {
-            bellSound = try AVAudioPlayer(contentsOf: url)
-        } catch {
-            print("Error loading bellSound")
+            bellSound = try AVAudioPlayer(contentsOf: bellUrl)
+        } catch (let err as NSError) {
+            print(err.debugDescription)
         }
     }
     
@@ -50,14 +50,33 @@ class DrawView: UIView {
         drawPath.addLine(to: lastPoint)
         let line = Line(lastPoint, lastPoint!, currenColor.cgColor)
         lines.append(line)
-        label.text = lastPoint.debugDescription
+        if pointArrays.count > 0 {
+            pointArray = pointArrays[0]
+            if pointArray.count > 0 {
+                let point = pointArray[0]
+                if compareTwoPoint(point, lastPoint!) {
+                    print("Removed \(point)")
+                    self.playBellSound()
+                    pointArray.remove(at: 0)
+                    pointArrays[0] = pointArray
+                    
+                }
+            }
+            if pointArray.count == 0 {
+                print("Remove array")
+                pointArrays.remove(at: 0)
+                if !arrows.isEmpty {
+                    arrows.remove(at: 0)
+                }
+                
+            }
+        }
         print(lastPoint)
         self.setNeedsDisplay()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let newPoint = touches.first?.location(in: self)
-        label.text = newPoint!.debugDescription
         //        if !(newPoint?.equalTo(lastPoint))! {
         //            let line = Line(lastPoint, newPoint!)
         //            drawPath.addLine(to: newPoint!)
@@ -76,10 +95,7 @@ class DrawView: UIView {
                 let point = pointArray[0]
                 if compareTwoPoint(point, newPoint!) {
                     print("Removed \(point)")
-                    if bellSound.isPlaying {
-                        bellSound.stop()
-                    }
-                    bellSound.play()
+                    self.playBellSound()
                     pointArray.remove(at: 0)
                     pointArrays[0] = pointArray
                     
@@ -116,7 +132,7 @@ class DrawView: UIView {
     }
     
     func compareTwoPoint(_ point1: CGPoint, _ point2: CGPoint) -> Bool {
-        if abs(point1.x - point2.x) < 10 && abs(point1.y - point2.y) < 10 {
+        if abs(point1.x - point2.x) < 10 && abs(point1.y - point2.y) < 20 {
             print("Passed")
             return true
         }
@@ -178,6 +194,18 @@ class DrawView: UIView {
             context!.addLine(to: fPoint!)
             context!.strokePath()
         }
+    }
+    
+    func playBellSound() {
+        if bellSound.isPlaying {
+            bellSound.stop()
+            do {
+                bellSound = try AVAudioPlayer(contentsOf: bellUrl)
+            } catch (let err as NSError) {
+                print(err.debugDescription)
+            }
+        }
+        bellSound.play()
     }
     
 }

@@ -26,6 +26,8 @@ class MenuViewController: UIViewController {
     var selectedTable: Table!
     
     let synthesizer = AVSpeechSynthesizer()
+    
+    var closeSound: AVAudioPlayer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +142,7 @@ class MenuViewController: UIViewController {
         // talk
         let utterance = AVSpeechUtterance(string: (button.titleLabel?.text)!.lowercased())
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-        utterance.rate = 0.3
+        utterance.rate = 0.5
         synthesizer.stopSpeaking(at: .immediate)
         synthesizer.speak(utterance)
     }
@@ -150,14 +152,28 @@ class MenuViewController: UIViewController {
     }
     
     func backBtnPressed() {
-            self.dismiss(animated: true, completion: nil)
+        self.playCloseSound()
+        print("close")
+        self.dismiss(animated: true, completion: self.playCloseSound)
+    }
+    
+    // play close sound
+    func playCloseSound() {
+        let path = Bundle.main.path(forResource: "close", ofType: "wav")!
+        let closeUrl = URL(fileURLWithPath: path)
+        do {
+            closeSound = try AVAudioPlayer(contentsOf: closeUrl)
+            closeSound.play()
+        } catch (let err as NSError) {
+            print(err.debugDescription)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                if let destination = segue.destination as? ViewController {
-                    destination.selectedIndex = self.selectedIndex
-                    destination.alphabetArray = self.alphabetArray
-                }
+        if let destination = segue.destination as? ViewController {
+            destination.selectedIndex = self.selectedIndex
+            destination.alphabetArray = self.alphabetArray
+        }
     }
     
 }
