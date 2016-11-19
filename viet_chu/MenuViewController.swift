@@ -31,6 +31,7 @@ class MenuViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "theme1")!)
         // setup font
         let cfURL = Bundle.main.url(forResource: "PENMP", withExtension: "TTF") as! CFURL
         CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
@@ -74,7 +75,7 @@ class MenuViewController: UIViewController {
             alphabetBtn.titleLabel!.font = font
             alphabetBtn.titleLabel?.textAlignment = .center
             alphabetBtn.titleLabel?.frame = alphabetBtn.frame
-            let btnImage1 = UIImage(named: "button1")
+            let btnImage1 = UIImage(named: "button3")
             let btnImage2 = UIImage(named: "button2")
             alphabetBtn.setBackgroundImage(btnImage1, for: .normal)
             alphabetBtn.setBackgroundImage(btnImage2, for: .selected)
@@ -99,18 +100,18 @@ class MenuViewController: UIViewController {
         
         
         //ten game
-        let name = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-        name.center = CGPoint(x: 50, y: 30)
-        name.textAlignment = .center
-        name.text = "Game "
-        self.view.addSubview(name)
+//        let name = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+//        name.center = CGPoint(x: 50, y: 30)
+//        name.textAlignment = .center
+//        name.text = "Game "
+//        self.view.addSubview(name)
         
         //logo
-        let logo = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-        logo.center = CGPoint(x: 50, y: UIScreen.main.bounds.height - 30)
-        logo.textAlignment = .center
-        logo.text = "Logo "
-        self.view.addSubview(logo)
+//        let logo = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+//        logo.center = CGPoint(x: 50, y: UIScreen.main.bounds.height - 30)
+//        logo.textAlignment = .center
+//        logo.text = "Logo "
+//        self.view.addSubview(logo)
         
         //play button
         let playBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.03 , width: 80, height: 50))
@@ -130,14 +131,29 @@ class MenuViewController: UIViewController {
     }
     
     func btnPressed(_ sender: UITapGestureRecognizer) {
-        print("pressed")
+        
         for subView in boardGame.subviews {
             let tmpButton = subView as! UIButton
             tmpButton.isSelected = false
         }
+        
         let button  = sender.view as! UIButton
         button.isSelected = true
         selectedIndex = button.tag
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            button.transform = button.transform.rotated(by: 0.5)
+        }, completion: {
+            (value: Bool) in
+            UIView.animate(withDuration: 0.3, animations: {
+                button.transform = button.transform.rotated(by: -1)
+            }, completion: {
+            (value: Bool) in
+                UIView.animate(withDuration: 0.3, animations: {
+                    button.transform = button.transform.rotated(by: 0.5)
+                })
+            })
+        })
         
         // talk
         let utterance = AVSpeechUtterance(string: (button.titleLabel?.text)!.lowercased())

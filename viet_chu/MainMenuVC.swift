@@ -19,14 +19,28 @@ class MainMenuVC: UIViewController {
     var selectedTable = Table.alphabetLower
     
     override func viewDidLoad() {
+        let themeView = UIImageView(frame: self.view.frame)
+        themeView.image = UIImage(named: "theme")
+        self.view.insertSubview(themeView, at: 0)
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        print("willAppear")
+////        numberBtn.frame.size = CGSize(width: self.view.frame.width , height: self.view.frame.height / 3)
+////        alphebetLowBtn.frame.size = CGSize(width: self.view.frame.width , height: self.view.frame.height / 3)
+////        alphabetUpBtn.frame.size = CGSize(width: self.view.frame.width , height: self.view.frame.height / 3)
+//    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        alphebetLowBtn.frame.size = CGSize(width: self.view.frame.width / 4 , height: self.view.frame.height / 3)
+        alphebetLowBtn.center = CGPoint(x: self.view.frame.width / 3 - 20, y: self.view.frame.height / 3 - 20)
+        alphabetUpBtn.frame.size = CGSize(width: self.view.frame.width / 4 , height: self.view.frame.height / 3)
+        alphabetUpBtn.center = CGPoint(x: self.view.frame.width / 3 * 2 + 20, y: self.view.frame.height / 3 - 20)
+        numberBtn.frame.size = CGSize(width: self.view.frame.width / 4 , height: self.view.frame.height / 3)
+        numberBtn.center = CGPoint(x: self.view.frame.width / 3 - 20, y: self.view.frame.height / 3 * 2)
     }
     
     @IBAction func numberBtnPressed(_ sender: Any) {

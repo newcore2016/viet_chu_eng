@@ -1023,15 +1023,15 @@ class AlphabetUtils {
     class func getQPoints()->[[CGPoint]]{
         var pointArrays = [[CGPoint]]()
         var array1 = [CGPoint]()
-        array1.append(CGPoint(x: 106.1, y: 17.0))
-        array1.append(CGPoint(x: 38.1, y: 114.5))
-        array1.append(CGPoint(x: 105.6, y: 225.5))
-        array1.append(CGPoint(x: 175.1, y: 116.0))
-        array1.append(CGPoint(x: 106.1, y: 17.0))
+        array1.append(CGPoint(x: 142.6, y: 140.5))
+        array1.append(CGPoint(x: 57.1, y: 145.0))
+        array1.append(CGPoint(x: 66.6, y: 215.5))
+        array1.append(CGPoint(x: 141.1, y: 207.5))
         pointArrays.append(array1)
         array1 = [CGPoint]()
-        array1.append(CGPoint(x: 137.1, y: 166.5))
-        array1.append(CGPoint(x: 173.6, y: 229.5))
+        array1.append(CGPoint(x: 153.6, y: 118.5))
+        array1.append(CGPoint(x: 153.6, y: 190.5))
+        array1.append(CGPoint(x: 153.6, y: 280.0))
         pointArrays.append(array1)
         return pointArrays
     }
@@ -1574,7 +1574,6 @@ class AlphabetUtils {
         path.apply(trans)
         let translate = CGAffineTransform(translationX: 50, y: 350)
         path.apply(translate)
-        print(path)
         return path
     }
     
@@ -1756,7 +1755,6 @@ class AlphabetUtils {
         path.apply(trans)
         let translate = CGAffineTransform(translationX: 10 - path.bounds.minX, y: 10 - path.bounds.minY)
         path.apply(translate)
-        print("\(character) \(path.bounds)")
         return path
     }
     

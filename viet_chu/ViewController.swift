@@ -19,15 +19,13 @@ class ViewController: UIViewController {
     var alphabetArray = [Alphabet]()
     var selectedIndex = 0
     let synthesizer = AVSpeechSynthesizer()
-    var penColorBtn = [UIButton]()
+    var colorArray = [UIColor]()
+    var penBtnArray = [UIButton]()
     var closeSound: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         drawView.frame = CGRect(x: self.view.frame.width * 2 / 10, y: 0, width: self.view.frame.width * 6.5 / 10, height: self.view.frame.height)
-//        let paperView = UIImageView(frame: drawView.frame)
-//        paperView.image = UIImage(named: "paper")
-//        drawView.addSubview(paperView)
         self.drawView.backgroundColor = UIColor(patternImage: UIImage(named: "paper")!)
         drawView.setupSound()
         self.createDrawView()
@@ -35,55 +33,70 @@ class ViewController: UIViewController {
         
         // create left menu layout
         leftMenu = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 2 / 10, height: self.view.frame.height))
-        leftMenu.backgroundColor = UIColor.green
+        leftMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
         // label : Tập viết chữ
-        let label = UILabel(frame: CGRect(x: 0, y: 10, width: leftMenu.frame.width, height: 20))
-        label.textAlignment = .center
-        label.textColor = UIColor.purple
-        label.text = "Writting game"
-        leftMenu.addSubview(label)
+//        let label = UILabel(frame: CGRect(x: 0, y: 10, width: leftMenu.frame.width, height: 20))
+//        label.textAlignment = .center
+//        label.textColor = UIColor.purple
+//        label.text = "Writting game"
+//        leftMenu.addSubview(label)
         
         // Image chữ cái mẫu
         originalView = UIImageView(frame: CGRect(x: 5, y: 40, width: leftMenu.frame.width - 10, height: leftMenu.frame.width - 10))
-        originalView.backgroundColor = UIColor.white
+        originalView.backgroundColor = UIColor(patternImage: UIImage(named: "paper")!)
         createOriginalView()
         leftMenu.addSubview(originalView)
         
         // Add bảng màu
         let redBtn = UIButton(frame: CGRect(x: 15, y: originalView.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
-        redBtn.backgroundColor = UIColor.red
+        redBtn.tag = 0
+        colorArray.append(UIColor.red)
+        redBtn.setImage(UIImage(named: "redPen"), for: .normal)
         var changeColorGesture = UITapGestureRecognizer(target: self, action: #selector(self.changePenColor(_:)))
         redBtn.addGestureRecognizer(changeColorGesture)
-        penColorBtn.append(redBtn)
+        penBtnArray.append(redBtn)
         leftMenu.addSubview(redBtn)
         
         let yellowBtn = UIButton(frame: CGRect(x: 5, y: redBtn.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
-        yellowBtn.backgroundColor = UIColor.yellow
+        yellowBtn.tag = 1
+        colorArray.append(UIColor.yellow)
+        yellowBtn.setImage(UIImage(named: "yellowPen"), for: .normal)
         changeColorGesture = UITapGestureRecognizer(target: self, action: #selector(self.changePenColor(_:)))
         yellowBtn.addGestureRecognizer(changeColorGesture)
-        penColorBtn.append(yellowBtn)
+        penBtnArray.append(yellowBtn)
         leftMenu.addSubview(yellowBtn)
         
-        let pinkBtn = UIButton(frame: CGRect(x: 5, y: yellowBtn.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
-        pinkBtn.backgroundColor = UIColor.orange
+        let orangeBtn = UIButton(frame: CGRect(x: 5, y: yellowBtn.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
+        orangeBtn.tag = 2
+        colorArray.append(UIColor.orange)
+        orangeBtn.setImage(UIImage(named: "orangePen"), for: .normal)
         changeColorGesture = UITapGestureRecognizer(target: self, action: #selector(self.changePenColor(_:)))
-        pinkBtn.addGestureRecognizer(changeColorGesture)
-        penColorBtn.append(pinkBtn)
-        leftMenu.addSubview(pinkBtn)
+        orangeBtn.addGestureRecognizer(changeColorGesture)
+        penBtnArray.append(orangeBtn)
+        leftMenu.addSubview(orangeBtn)
+        
+        let greenBtn = UIButton(frame: CGRect(x: 5, y: orangeBtn.frame.maxY + 20, width: leftMenu.frame.width - 10, height: 20))
+        greenBtn.tag = 3
+        colorArray.append(UIColor.green)
+        greenBtn.setImage(UIImage(named: "greenPen"), for: .normal)
+        changeColorGesture = UITapGestureRecognizer(target: self, action: #selector(self.changePenColor(_:)))
+        greenBtn.addGestureRecognizer(changeColorGesture)
+        penBtnArray.append(greenBtn)
+        leftMenu.addSubview(greenBtn)
         
         
         // Logo game
-        let logoGame = UILabel(frame: CGRect(x: 0, y: leftMenu.frame.height - 50, width: leftMenu.frame.width, height: 40 ))
-        logoGame.textAlignment = .center
-        logoGame.textColor = UIColor.purple
-        logoGame.text = "Logo game"
-        leftMenu.addSubview(logoGame)
+//        let logoGame = UILabel(frame: CGRect(x: 0, y: leftMenu.frame.height - 50, width: leftMenu.frame.width, height: 40 ))
+//        logoGame.textAlignment = .center
+//        logoGame.textColor = UIColor.purple
+//        logoGame.text = "Logo game"
+//        leftMenu.addSubview(logoGame)
         
         self.view.addSubview(leftMenu)
         
         // create right menu layout
         rightMenu = UIView(frame: CGRect(x: self.view.frame.width * 8.5 / 10, y: 0, width: self.view.frame.width * 1.5 / 10, height: self.view.frame.height))
-        rightMenu.backgroundColor = UIColor.green
+        rightMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
         // button Viết lại
         let resetBtn = UIButton(frame: CGRect(x: 5, y: 10, width: rightMenu.frame.width - 10, height: 40 ))
 //        resetBtn.setTitle("Reset", for: .normal)
@@ -148,7 +161,6 @@ class ViewController: UIViewController {
         utterance.rate = 0.3
         synthesizer.stopSpeaking(at: .immediate)
         synthesizer.speak(utterance)
-        drawView.currenColor = UIColor.purple
         
     }
     
@@ -172,7 +184,7 @@ class ViewController: UIViewController {
     // create draw view
     func createDrawView() {
         print("create new draw view")
-        drawView.conLabel.removeFromSuperview()
+        drawView.isUserInteractionEnabled = true
         drawView.isCompleted = false
         drawView.character = alphabetArray[selectedIndex].unicode
         drawView.lines = [Line]()
@@ -242,10 +254,9 @@ class ViewController: UIViewController {
     }
     
     func changePenColor(_ sender: UITapGestureRecognizer) {
-        print("changeColor")
         let button = sender.view as! UIButton
-        drawView.currenColor = button.backgroundColor!
-        for btn in penColorBtn {
+        drawView.currenColor = colorArray[button.tag]
+        for btn in penBtnArray {
             btn.frame.origin = CGPoint(x: 5, y: btn.frame.origin.y)
         }
         button.frame.origin = CGPoint(x: 15, y: button.frame.origin.y)
