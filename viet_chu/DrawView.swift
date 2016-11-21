@@ -11,6 +11,7 @@ import AVFoundation
 
 class DrawView: UIView {
     var character: String!
+    var tmpLines = [Line]()
     var lines = [Line]()
     var lastPoint: CGPoint!
     var colorFlag = false
@@ -45,8 +46,16 @@ class DrawView: UIView {
     
     var firstPoint: CGPoint!
     
-    
+    var tmpPointArrays: [[CGPoint]]!
+    var isNewTouch = false
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isNewTouch = true
+        tmpPointArrays = [[CGPoint]]()
+//        tmpPointArrays = pointArrays
+        
+        for pArray in pointArrays {
+            tmpPointArrays.append(pArray)
+        }
         firstPoint = touches.first?.location(in: self) // TODO
         lastPoint = touches.first?.location(in: self)
         let line = Line(lastPoint, lastPoint!, currenColor.cgColor)
@@ -78,79 +87,102 @@ class DrawView: UIView {
                 if !arrows.isEmpty {
                     arrows.remove(at: 0)
                 }
-                
             }
         }
-//        print(lastPoint)
         self.setNeedsDisplay()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let newPoint = touches.first?.location(in: self)
-        let line = Line(lastPoint, newPoint!, currenColor.cgColor)
-        lines.append(line)
-        lastPoint = newPoint
-        
-        if pointArrays.count > 0 {
-            pointArray = pointArrays[0]
-            if pointArray.count > 0 {
-                let point = pointArray[0]
-                if compareTwoPoint(point, newPoint!) {
-                    self.playBellSound()
-                    let starView = UIImageView()
-                    starView.center = lastPoint
-                    starView.image = starImage
-                    self.addSubview(starView)
-                    UIView.animate(withDuration: 0.5, animations: {
-                        starView.frame.size = CGSize(width: 25, height: 25)
-                        starView.center = CGPoint(x: starView.center.x - 30, y: starView.center.y - 30)
-                    }, completion: {
-                        finished in
-                        starView.removeFromSuperview()
-                    })
-                    pointArray.remove(at: 0)
-                    pointArrays[0] = pointArray
+        if (touches.first?.view?.isUserInteractionEnabled)! {
+            let newPoint = touches.first?.location(in: self)
+            let line = Line(lastPoint, newPoint!, currenColor.cgColor)
+            lines.append(line)
+            lastPoint = newPoint
+            controlPoint: if pointArrays.count > 0 {
+                pointArray = pointArrays[0]
+                if pointArray.count > 0 {
+                    let point = pointArray[0]
+                    if compareTwoPoint(point, newPoint!) {
+                        self.playBellSound()
+                        let starView = UIImageView()
+                        starView.center = lastPoint
+                        starView.image = starImage
+                        self.addSubview(starView)
+                        UIView.animate(withDuration: 0.5, animations: {
+                            starView.frame.size = CGSize(width: 25, height: 25)
+                            starView.center = CGPoint(x: starView.center.x - 30, y: starView.center.y - 30)
+                        }, completion: {
+                            finished in
+                            starView.removeFromSuperview()
+                        })
+                        pointArray.remove(at: 0)
+                        pointArrays[0] = pointArray
+                        if pointArray.count == 0 {
+                            isNewTouch = false
+                            tmpLines = lines
+                            pointArrays.remove(at: 0)
+                            if !arrows.isEmpty {
+                                arrows.remove(at: 0)
+                            }
+                        }
+                        break controlPoint
+                    } else {
+                        // kiểm tra nét mới trước khi kiểm tra points
+                        if isNewTouch {
+                            for p in pointArray {
+                                if compareTwoPoint(p, newPoint!) {
+                                    touches.first?.view?.isUserInteractionEnabled = false
+                                    lines = tmpLines
+                                    pointArrays = tmpPointArrays!
+                                    break controlPoint
+                                }
+                            }
+                        }
+                        
+                    }
                     
                 }
             }
-            if pointArray.count == 0 {
-                pointArrays.remove(at: 0)
-                if !arrows.isEmpty {
-                    arrows.remove(at: 0)
-                }
-                
-            }
+            self.setNeedsDisplay()
         }
-        self.setNeedsDisplay()
     }
     
     var conImage = UIImageView() // congratulation image
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if pointArrays.count == 0 {
-            isCompleted = true
-            self.isUserInteractionEnabled = false
-            // talk
-            let utterance = AVSpeechUtterance(string: character.lowercased())
-            utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-            utterance.rate = 0.3
-            synthesizer.stopSpeaking(at: .immediate)
-            synthesizer.speak(utterance)
-//            conImage = UIImageView()
-            conImage.center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
-            conImage.frame.size = CGSize(width: 5, height: 5)
-            conImage.image = UIImage(named: "smile2")
-            self.addSubview(conImage)
-            UIView.animate(withDuration: 0.5, animations: {
-                self.conImage.frame.size = CGSize(width: 100, height: 100)
-            }, completion: {
-                finished in
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                    self.conImage.removeFromSuperview()
-                    self.originalPath = nil
-                    self.setNeedsDisplay()
-                })
-            })
+        touches.first?.view?.isUserInteractionEnabled = true
+        // if there is no pointArray removed
+        if pointArrays.count  == tmpPointArrays.count {
+            lines = tmpLines
+            pointArrays = tmpPointArrays!
         }
+        else {
+            tmpLines = lines
+            if pointArrays.count == 0{
+                isCompleted = true
+                self.isUserInteractionEnabled = false
+                // talk
+                let utterance = AVSpeechUtterance(string: character.lowercased())
+                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+                utterance.rate = 0.3
+                synthesizer.stopSpeaking(at: .immediate)
+                synthesizer.speak(utterance)
+                conImage.center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
+                conImage.frame.size = CGSize(width: 5, height: 5)
+                conImage.image = UIImage(named: "smile2")
+                self.addSubview(conImage)
+                self.originalPath = nil
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.conImage.frame.size = CGSize(width: 100, height: 100)
+                }, completion: {
+                    finished in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                        self.conImage.removeFromSuperview()
+                    })
+                })
+            }
+        }
+        self.setNeedsDisplay()
+        
     }
     
     func compareTwoPoint(_ point1: CGPoint, _ point2: CGPoint) -> Bool {
@@ -164,8 +196,6 @@ class DrawView: UIView {
         let context = UIGraphicsGetCurrentContext()
         context!.beginPath()
         context!.setLineCap(.round)
-        
-//        context!.setStrokeColor(UIColor.red.cgColor)
         if originalPath != nil {
             context!.setLineWidth(3)
             context?.addPath(originalPath)
@@ -187,7 +217,7 @@ class DrawView: UIView {
         context!.setStrokeColor(UIColor.blue.cgColor)
         var points = pointArrays.first
         var fPoint: CGPoint!
-        if points != nil {
+        if points != nil && (points?.count)! > 0 {
             fPoint = points?.remove(at: 0)
             context!.setStrokeColor(UIColor.blue.cgColor)
             for point in points! {

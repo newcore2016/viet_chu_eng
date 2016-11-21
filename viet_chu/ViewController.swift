@@ -101,7 +101,7 @@ class ViewController: UIViewController {
         let resetBtn = UIButton(frame: CGRect(x: 5, y: 10, width: rightMenu.frame.width - 10, height: 40 ))
 //        resetBtn.setTitle("Reset", for: .normal)
 //        resetBtn.backgroundColor = UIColor.red
-        resetBtn.setImage(UIImage(named: "replay"), for: .normal)
+        resetBtn.setImage(UIImage(named: "replay1"), for: .normal)
         resetBtn.addTarget(self, action: #selector(self.createDrawView) , for: .touchUpInside)
         rightMenu.addSubview(resetBtn)
         
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
         let nextBtn = UIButton(frame: CGRect(x: 5, y: 10 + resetBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
 //        nextBtn.setTitle("Next", for: .normal)
 //        nextBtn.backgroundColor = UIColor.red
-        nextBtn.setImage(UIImage(named: "next"), for: .normal)
+        nextBtn.setImage(UIImage(named: "next1"), for: .normal)
         nextBtn.addTarget(self, action: #selector(self.nextBtnPressed) , for: .touchUpInside)
         rightMenu.addSubview(nextBtn)
         
@@ -117,7 +117,7 @@ class ViewController: UIViewController {
         let prevBtn = UIButton(frame: CGRect(x: 5, y: 10 + nextBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
 //        prevBtn.setTitle("Previous", for: .normal)
 //        prevBtn.backgroundColor = UIColor.red
-        prevBtn.setImage(UIImage(named: "previous"), for: .normal)
+        prevBtn.setImage(UIImage(named: "previous1"), for: .normal)
         prevBtn.addTarget(self, action: #selector(self.prevBtnPressed) , for: .touchUpInside)
         rightMenu.addSubview(prevBtn)
         
@@ -125,14 +125,14 @@ class ViewController: UIViewController {
         let talkBtn = UIButton(frame: CGRect(x: 5, y: 40 + prevBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
 //        talkBtn.setTitle("Listen", for: .normal)
 //        talkBtn.backgroundColor = UIColor.red
-        talkBtn.setImage(UIImage(named: "speaker"), for: .normal)
+        talkBtn.setImage(UIImage(named: "speaker1"), for: .normal)
         talkBtn.addTarget(self, action: #selector(self.talkBtnPressed) , for: .touchUpInside)
         rightMenu.addSubview(talkBtn)
         
         // button Quay lại
         let backBtn = UIButton(frame: CGRect(x: 5, y: rightMenu.frame.height - 50 , width: rightMenu.frame.width - 10, height: 40 ))
 //        backBtn.setTitle("Back", for: .normal)
-        backBtn.setImage(UIImage(named: "close"), for: .normal)
+        backBtn.setImage(UIImage(named: "close1"), for: .normal)
         backBtn.addTarget(self, action: #selector(self.backBtnPressed) , for: .touchUpInside)
         rightMenu.addSubview(backBtn)
         self.view.addSubview(rightMenu)
@@ -188,6 +188,7 @@ class ViewController: UIViewController {
         drawView.isCompleted = false
         drawView.character = alphabetArray[selectedIndex].unicode
         drawView.lines = [Line]()
+        drawView.tmpLines = [Line]()
         let tmpPath = UIBezierPath()
         tmpPath.append(alphabetArray[selectedIndex].path)
         let widthRatio = (drawView.frame.width - 40) / tmpPath.bounds.width

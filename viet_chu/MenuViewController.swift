@@ -8,8 +8,9 @@
 
 import UIKit
 import AVFoundation
+import Speech
 
-class MenuViewController: UIViewController {
+class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     var alphabetArray = [Alphabet]()
     
@@ -28,9 +29,60 @@ class MenuViewController: UIViewController {
     let synthesizer = AVSpeechSynthesizer()
     
     var closeSound: AVAudioPlayer!
+    
+    var backBtn: UIButton!
+    
+    var speakBtn: UIButton!
+    
+    var label: UILabel!
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "en-US"))
+    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
+    private var recognitionTask: SFSpeechRecognitionTask?
+    private let audioEngine = AVAudioEngine()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        speechRecognizer?.delegate = self
+        label = UILabel(frame: CGRect(x: 0, y: 10, width: self.view.frame.width, height: 30))
+        label.center = CGPoint(x: self.view.center.x, y: label.center.y)
+        label.textAlignment = .center
+        self.view.addSubview(label)
+        // speak button
+        speakBtn = UIButton(frame: CGRect(x: self.view.frame.width / 2, y: self.view.frame.height - 70, width: 80, height: 60))
+        speakBtn.addTarget(self, action: #selector(self.letSpeak), for: .touchUpInside)
+//        speakBtn.backgroundColor = UIColor.red
+        speakBtn.setImage(UIImage(named: "microphone"), for: .normal)
+        speakBtn.center = CGPoint(x: self.view.center.x, y: speakBtn.center.y)
+//        speakBtn.addTarget(self, action: #selector(self.backBtnPressed), for: .touchUpInside)
+        speakBtn.setTitle("Speak", for: .normal)
+        self.view.addSubview(speakBtn)
+        SFSpeechRecognizer.requestAuthorization { (authStatus) in  //4
+            
+            var isButtonEnabled = false
+            
+            switch authStatus {  //5
+            case .authorized:
+                isButtonEnabled = true
+                
+            case .denied:
+                isButtonEnabled = false
+                print("User denied access to speech recognition")
+                
+            case .restricted:
+                isButtonEnabled = false
+                print("Speech recognition restricted on this device")
+                
+            case .notDetermined:
+                isButtonEnabled = false
+                print("Speech recognition not yet authorized")
+            }
+            
+            OperationQueue.main.addOperation() {
+//                self.microphoneButton.isEnabled = isButtonEnabled
+                print(isButtonEnabled)
+            }
+        }
+        
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "theme1")!)
         // setup font
         let cfURL = Bundle.main.url(forResource: "PENMP", withExtension: "TTF") as! CFURL
@@ -117,16 +169,17 @@ class MenuViewController: UIViewController {
         let playBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.03 , width: 80, height: 50))
 //        playBtn.setTitle("Viết chữ", for: .normal)
 //        playBtn.backgroundColor = UIColor.purple
-        playBtn.setImage(UIImage(named: "penButton"), for: .normal)
+        playBtn.setImage(UIImage(named: "penButton2"), for: .normal)
         playBtn.addTarget(self, action: #selector(self.playBtnPressed), for: .touchUpInside)
         self.view.addSubview(playBtn)
         
         //back button
-        let backBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.85 , width: 80, height: 30))
+        backBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.85 , width: 80, height: 30))
 //        backBtn.setTitle("Quay lại", for: .normal)
 //        backBtn.backgroundColor = UIColor.purple
         backBtn.addTarget(self, action: #selector(self.backBtnPressed), for: .touchUpInside)
-        backBtn.setImage(UIImage(named: "close"), for: .normal)
+        backBtn.setImage(UIImage(named: "close1"), for: .normal)
+        self.view.bringSubview(toFront: speakBtn)
         self.view.addSubview(backBtn)
     }
     
@@ -167,10 +220,136 @@ class MenuViewController: UIViewController {
         performSegue(withIdentifier: "DrawSegue", sender: self)
     }
     
+    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
+        if available {
+            speakBtn.isEnabled = true
+        } else {
+            speakBtn.isEnabled = false
+        }
+    }
+    
+    func startRecording() {
+        
+        if recognitionTask != nil {
+            recognitionTask?.cancel()
+            recognitionTask = nil
+        }
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+//            try audioSession.setCategory(AVAudioSessionCategoryRecord)
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+            try audioSession.setMode(AVAudioSessionModeMeasurement)
+            try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+        } catch {
+            print("audioSession properties weren't set because of an error.")
+        }
+        
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+        
+        guard let inputNode = audioEngine.inputNode else {
+            fatalError("Audio engine has no input node")
+        }
+        
+//        guard let outputNode = audioEngine.outputNode else {
+//            fatalError("Audio engine has no input node")
+//        }
+        
+        guard let recognitionRequest = recognitionRequest else {
+            fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
+        }
+        
+        recognitionRequest.shouldReportPartialResults = true
+        
+        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
+            
+            
+            var isFinal = false
+//            var s = ""
+            if result?.transcriptions != nil {
+                for t in (result?.transcriptions)! {
+                    print(t.formattedString)
+                }
+            }
+            if result != nil {
+                isFinal = (result?.isFinal)!
+//                self.label.text = result?.bestTranscription.formattedString
+                let tmp = result?.bestTranscription.formattedString
+                for view in self.boardGame.subviews {
+                    let btn = view as! UIButton
+                    if tmp?.range(of: (btn.titleLabel?.text?.uppercased())!) != nil {
+                        if !btn.isSelected {
+                            UIView.animate(withDuration: 0.3, animations: {
+                                btn.transform = btn.transform.rotated(by: 0.5)
+                            }, completion: {
+                                (value: Bool) in
+                                UIView.animate(withDuration: 0.3, animations: {
+                                    btn.transform = btn.transform.rotated(by: -1)
+                                }, completion: {
+                                    (value: Bool) in
+                                    UIView.animate(withDuration: 0.3, animations: {
+                                        btn.transform = btn.transform.rotated(by: 0.5)
+                                    })
+                                })
+                            })
+                            btn.isSelected = true
+                        }
+                        
+                    }
+                }
+                
+//                self.label.text = s
+//                print(s)
+                
+            }
+            
+            if error != nil || isFinal {
+                self.audioEngine.stop()
+                inputNode.removeTap(onBus: 0)
+//                audioEngine.outputNode.removeTap(onBus: <#T##AVAudioNodeBus#>)
+                
+                self.recognitionRequest = nil
+                self.recognitionTask = nil
+                self.label.text = "Stopped"
+                self.speakBtn.isEnabled = true
+            }
+        })
+        
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, when) in
+            self.recognitionRequest?.append(buffer)
+        }
+        
+        
+        
+        do {
+            audioEngine.prepare()
+            try audioEngine.start()
+        } catch {
+            print("audioEngine couldn't start because of an error.")
+        }
+        
+        label.text = "Let's speak, i'm listening :)!"
+        
+    }
+    
     func backBtnPressed() {
         self.playCloseSound()
         print("close")
         self.dismiss(animated: true, completion: self.playCloseSound)
+    }
+    
+    func letSpeak() {
+        print("letSpeak")
+        if audioEngine.isRunning {
+            audioEngine.stop()
+            recognitionRequest?.endAudio()
+            speakBtn.isEnabled = false
+            speakBtn.setTitle("Start Recording", for: .normal)
+        } else {
+            startRecording()
+            speakBtn.setTitle("Stop Recording", for: .normal)
+        }
     }
     
     // play close sound
