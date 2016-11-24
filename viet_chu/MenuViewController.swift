@@ -210,7 +210,7 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
         
         // talk
         let utterance = AVSpeechUtterance(string: (button.titleLabel?.text)!.lowercased())
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.voice = AVSpeechSynthesisVoice(language: "vi-VN")
         utterance.rate = 0.5
         synthesizer.stopSpeaking(at: .immediate)
         synthesizer.speak(utterance)
@@ -335,12 +335,10 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     func backBtnPressed() {
         self.playCloseSound()
-        print("close")
         self.dismiss(animated: true, completion: self.playCloseSound)
     }
     
     func letSpeak() {
-        print("letSpeak")
         if audioEngine.isRunning {
             audioEngine.stop()
             recognitionRequest?.endAudio()

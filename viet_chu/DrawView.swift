@@ -26,7 +26,16 @@ class DrawView: UIView {
     
     var bellSound: AVAudioPlayer!
     var bellUrl: URL!
+    var timer: Timer!
+    var insideCount = 0
+    var tmpInsideCount = 0
+    var outsideCount = 0
+    var tmpOutsideCount = 0
     
+    var wrongMoveDetected = false
+    
+    var conImage = UIImageView() // congratulation image
+    var emotionImage = UIImageView() // emotion image for each step
     var starImage: UIImage!
     
     func setupSound() {
@@ -44,19 +53,21 @@ class DrawView: UIView {
         originalPath = path
     }
     
-    var firstPoint: CGPoint!
     
     var tmpPointArrays: [[CGPoint]]!
     var isNewTouch = false
+    var removedPoint = CGPoint(x: 0, y: 0) // just removed point
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         isNewTouch = true
+        // store tmp variables to backup if needed
         tmpPointArrays = [[CGPoint]]()
-//        tmpPointArrays = pointArrays
-        
         for pArray in pointArrays {
             tmpPointArrays.append(pArray)
         }
-        firstPoint = touches.first?.location(in: self) // TODO
+        tmpInsideCount = insideCount
+        tmpOutsideCount = outsideCount
+        //-------------------
+        
         lastPoint = touches.first?.location(in: self)
         let line = Line(lastPoint, lastPoint!, currenColor.cgColor)
         lines.append(line)
@@ -65,6 +76,7 @@ class DrawView: UIView {
             if pointArray.count > 0 {
                 let point = pointArray[0]
                 if compareTwoPoint(point, lastPoint!) {
+                    removedPoint = point
                     self.playBellSound()
                     let starView = UIImageView()
                     starView.center = CGPoint(x: lastPoint.x - 20, y: lastPoint.y - 20)
@@ -95,6 +107,14 @@ class DrawView: UIView {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (touches.first?.view?.isUserInteractionEnabled)! {
             let newPoint = touches.first?.location(in: self)
+            if originalPath.contains(newPoint!) {
+                insideCount += 1
+                print(insideCount)
+            } else {
+                outsideCount += 1
+                print(outsideCount)
+
+            }
             let line = Line(lastPoint, newPoint!, currenColor.cgColor)
             lines.append(line)
             lastPoint = newPoint
@@ -103,6 +123,8 @@ class DrawView: UIView {
                 if pointArray.count > 0 {
                     let point = pointArray[0]
                     if compareTwoPoint(point, newPoint!) {
+                        removedPoint = CGPoint(x: point.x, y: point.y)
+                        print(removedPoint)
                         self.playBellSound()
                         let starView = UIImageView()
                         starView.center = lastPoint
@@ -118,22 +140,60 @@ class DrawView: UIView {
                         pointArray.remove(at: 0)
                         pointArrays[0] = pointArray
                         if pointArray.count == 0 {
+                            wrongMoveDetected = true
                             isNewTouch = false
                             tmpLines = lines
+                            tmpInsideCount = insideCount
+                            tmpOutsideCount = outsideCount
                             pointArrays.remove(at: 0)
                             if !arrows.isEmpty {
                                 arrows.remove(at: 0)
                             }
+                            emotionImage.center = CGPoint(x: 0, y: 0)
+                            emotionImage.frame.size = CGSize(width: 5, height: 5)
+                            emotionImage.image = UIImage(named: "continue")
+                            self.addSubview(emotionImage)
+                            UIView.animate(withDuration: 0.5, animations: {
+                                self.emotionImage.frame.size = CGSize(width: 100, height: 100)
+                                self.emotionImage.center = CGPoint(x: 50, y: 50)
+                            }, completion: {
+                                finished in
+                                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                                    self.emotionImage.removeFromSuperview()
+                                })
+                            })
                         }
                         break controlPoint
                     } else {
                         // kiểm tra nét mới trước khi kiểm tra points
                         if isNewTouch {
+                            // kiểm tra points
+//                            point = pointArray[0]
                             for p in pointArray {
-                                if compareTwoPoint(p, newPoint!) {
+                                if !compareTwoPoint(removedPoint, p) && compareTwoPoint(p, newPoint!) {
+//                                    print(removedPoint)
+//                                    print(newPoint!)
+//                                    print(point)
+//                                    print(p)
+                                    wrongMoveDetected = true
                                     touches.first?.view?.isUserInteractionEnabled = false
                                     lines = tmpLines
+                                    insideCount = tmpInsideCount
+                                    outsideCount = tmpOutsideCount
                                     pointArrays = tmpPointArrays!
+                                    emotionImage.center = CGPoint(x: 0, y: 0)
+                                    emotionImage.frame.size = CGSize(width: 5, height: 5)
+                                    emotionImage.image = UIImage(named: "wrong")
+                                    self.addSubview(emotionImage)
+                                    UIView.animate(withDuration: 0.5, animations: {
+                                        self.emotionImage.frame.size = CGSize(width: 100, height: 100)
+                                        self.emotionImage.center = CGPoint(x: 50, y: 50)
+                                    }, completion: {
+                                        finished in
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                                            self.emotionImage.removeFromSuperview()
+                                        })
+                                    })
                                     break controlPoint
                                 }
                             }
@@ -147,16 +207,37 @@ class DrawView: UIView {
         }
     }
     
-    var conImage = UIImageView() // congratulation image
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touches.first?.view?.isUserInteractionEnabled = true
         // if there is no pointArray removed
         if pointArrays.count  == tmpPointArrays.count {
             lines = tmpLines
+            insideCount = tmpInsideCount
+            outsideCount = tmpOutsideCount
             pointArrays = tmpPointArrays!
+            if !wrongMoveDetected{
+                emotionImage.center = CGPoint(x: 0, y: 0)
+                emotionImage.frame.size = CGSize(width: 5, height: 5)
+                emotionImage.image = UIImage(named: "worry")
+                self.addSubview(emotionImage)
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.emotionImage.frame.size = CGSize(width: 100, height: 100)
+                    self.emotionImage.center = CGPoint(x: 50, y: 50)
+                }, completion: {
+                    finished in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                        self.emotionImage.removeFromSuperview()
+                    })
+                })
+
+            }
+            wrongMoveDetected = false
         }
         else {
             tmpLines = lines
+            tmpInsideCount = insideCount
+            tmpOutsideCount = outsideCount
             if pointArrays.count == 0{
                 isCompleted = true
                 self.isUserInteractionEnabled = false
@@ -166,11 +247,27 @@ class DrawView: UIView {
                 utterance.rate = 0.3
                 synthesizer.stopSpeaking(at: .immediate)
                 synthesizer.speak(utterance)
+                self.originalPath = nil
+                // congratulation image showing
+                print("Final:")
+                print(insideCount)
+                print(outsideCount)
+                if Float(outsideCount) / Float(insideCount) > 0.5 {
+                    print("Average")
+                    conImage.image = UIImage(named: "comeOn")
+                } else if Float(outsideCount) / Float(insideCount) > 0.35 {
+                    print("Fairy good")
+                    conImage.image = UIImage(named: "fairyGood")
+                } else if Float(outsideCount) / Float(insideCount) > 0.2 {
+                    print("Good")
+                    conImage.image = UIImage(named: "wow")
+                } else {
+                    print("Excellent")
+                    conImage.image = UIImage(named: "smile2")
+                }
                 conImage.center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
                 conImage.frame.size = CGSize(width: 5, height: 5)
-                conImage.image = UIImage(named: "smile2")
                 self.addSubview(conImage)
-                self.originalPath = nil
                 UIView.animate(withDuration: 0.5, animations: {
                     self.conImage.frame.size = CGSize(width: 100, height: 100)
                 }, completion: {

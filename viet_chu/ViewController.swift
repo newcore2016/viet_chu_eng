@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        drawView.frame = CGRect(x: self.view.frame.width * 2 / 10, y: 0, width: self.view.frame.width * 6.5 / 10, height: self.view.frame.height)
+        drawView.frame = CGRect(x: self.view.frame.width * 2 / 10, y: 0, width: self.view.frame.width * 6.8 / 10, height: self.view.frame.height)
         self.drawView.backgroundColor = UIColor(patternImage: UIImage(named: "paper")!)
         drawView.setupSound()
         self.createDrawView()
@@ -42,9 +42,11 @@ class ViewController: UIViewController {
 //        leftMenu.addSubview(label)
         
         // Image chữ cái mẫu
-        originalView = UIImageView(frame: CGRect(x: 5, y: 40, width: leftMenu.frame.width - 10, height: leftMenu.frame.width - 10))
-        originalView.backgroundColor = UIColor(patternImage: UIImage(named: "paper")!)
+        originalView = UIImageView(frame: CGRect(x: 5, y: 20, width: leftMenu.frame.width - 10, height: leftMenu.frame.width - 10))
+        let originalFrameView = UIImageView(frame: CGRect(x: 5, y: 20, width: leftMenu.frame.width - 10, height: leftMenu.frame.width - 10))
+        originalFrameView.image = UIImage(named: "button3")
         createOriginalView()
+        leftMenu.addSubview(originalFrameView)
         leftMenu.addSubview(originalView)
         
         // Add bảng màu
@@ -95,10 +97,11 @@ class ViewController: UIViewController {
         self.view.addSubview(leftMenu)
         
         // create right menu layout
-        rightMenu = UIView(frame: CGRect(x: self.view.frame.width * 8.5 / 10, y: 0, width: self.view.frame.width * 1.5 / 10, height: self.view.frame.height))
+        rightMenu = UIView(frame: CGRect(x: self.view.frame.width * 8.8 / 10, y: 0, width: self.view.frame.width * 1.2 / 10, height: self.view.frame.height))
         rightMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
         // button Viết lại
-        let resetBtn = UIButton(frame: CGRect(x: 5, y: 10, width: rightMenu.frame.width - 10, height: 40 ))
+        let resetBtn = UIButton(frame: CGRect(x: 3, y: 10, width: rightMenu.frame.width - 10, height: 40 ))
+        resetBtn.center = CGPoint(x: rightMenu.frame.width / 2, y: resetBtn.center.y)
 //        resetBtn.setTitle("Reset", for: .normal)
 //        resetBtn.backgroundColor = UIColor.red
         resetBtn.setImage(UIImage(named: "replay1"), for: .normal)
@@ -106,15 +109,18 @@ class ViewController: UIViewController {
         rightMenu.addSubview(resetBtn)
         
         // button Chữ kế tiếp
-        let nextBtn = UIButton(frame: CGRect(x: 5, y: 10 + resetBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
+        let nextBtn = UIButton(frame: CGRect(x: 3, y: 30 + resetBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
+        nextBtn.center = CGPoint(x: rightMenu.frame.width / 2, y: nextBtn.center.y)
 //        nextBtn.setTitle("Next", for: .normal)
 //        nextBtn.backgroundColor = UIColor.red
         nextBtn.setImage(UIImage(named: "next1"), for: .normal)
         nextBtn.addTarget(self, action: #selector(self.nextBtnPressed) , for: .touchUpInside)
         rightMenu.addSubview(nextBtn)
         
+        
         // button Chữ liền trước
-        let prevBtn = UIButton(frame: CGRect(x: 5, y: 10 + nextBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
+        let prevBtn = UIButton(frame: CGRect(x: 3, y: 30 + nextBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
+        nextBtn.center = CGPoint(x: rightMenu.frame.width / 2, y: nextBtn.center.y)
 //        prevBtn.setTitle("Previous", for: .normal)
 //        prevBtn.backgroundColor = UIColor.red
         prevBtn.setImage(UIImage(named: "previous1"), for: .normal)
@@ -122,7 +128,8 @@ class ViewController: UIViewController {
         rightMenu.addSubview(prevBtn)
         
         // button Phát âm
-        let talkBtn = UIButton(frame: CGRect(x: 5, y: 40 + prevBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
+        let talkBtn = UIButton(frame: CGRect(x: 6, y: 40 + prevBtn.frame.maxY, width: rightMenu.frame.width - 10, height: 40 ))
+        talkBtn.center = CGPoint(x: rightMenu.frame.width / 2, y: talkBtn.center.y)
 //        talkBtn.setTitle("Listen", for: .normal)
 //        talkBtn.backgroundColor = UIColor.red
         talkBtn.setImage(UIImage(named: "speaker1"), for: .normal)
@@ -130,7 +137,7 @@ class ViewController: UIViewController {
         rightMenu.addSubview(talkBtn)
         
         // button Quay lại
-        let backBtn = UIButton(frame: CGRect(x: 5, y: rightMenu.frame.height - 50 , width: rightMenu.frame.width - 10, height: 40 ))
+        let backBtn = UIButton(frame: CGRect(x: 0, y: rightMenu.frame.height - 50 , width: 80, height: 30 ))
 //        backBtn.setTitle("Back", for: .normal)
         backBtn.setImage(UIImage(named: "close1"), for: .normal)
         backBtn.addTarget(self, action: #selector(self.backBtnPressed) , for: .touchUpInside)
@@ -183,12 +190,13 @@ class ViewController: UIViewController {
     
     // create draw view
     func createDrawView() {
-        print("create new draw view")
         drawView.isUserInteractionEnabled = true
         drawView.isCompleted = false
         drawView.character = alphabetArray[selectedIndex].unicode
         drawView.lines = [Line]()
         drawView.tmpLines = [Line]()
+        drawView.insideCount = 0
+        drawView.outsideCount = 0
         let tmpPath = UIBezierPath()
         tmpPath.append(alphabetArray[selectedIndex].path)
         let widthRatio = (drawView.frame.width - 40) / tmpPath.bounds.width
@@ -237,9 +245,9 @@ class ViewController: UIViewController {
     
     func createOriginalView() {
         let tmpPath = UIBezierPath()
-        tmpPath.append(alphabetArray[selectedIndex].path) // TODO get from an array
-        let widthRatio = (originalView.frame.width - 10) / tmpPath.bounds.width
-        let heightRatio = (originalView.frame.height - 10) / tmpPath.bounds.height
+        tmpPath.append(alphabetArray[selectedIndex].path)
+        let widthRatio = (originalView.frame.width - 30) / tmpPath.bounds.width
+        let heightRatio = (originalView.frame.height - 30) / tmpPath.bounds.height
         var scaleRatio: CGFloat!
         if widthRatio > heightRatio {
             scaleRatio = heightRatio
