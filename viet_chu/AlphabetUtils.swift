@@ -1894,7 +1894,7 @@ class AlphabetUtils {
         array1.append(CGPoint(x: 55.6, y: 134.0))
         array1.append(CGPoint(x: 105.6, y: 225.5))
         array1.append(CGPoint(x: 158.6, y: 140.0))
-        array1.append(CGPoint(x: 85.1, y: 111.5))
+        array1.append(CGPoint(x: 99.1, y: 111.5))
         pointArrays.append(array1)
         return pointArrays
     }
