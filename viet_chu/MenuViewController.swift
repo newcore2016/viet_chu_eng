@@ -53,7 +53,6 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
 //        speakBtn.backgroundColor = UIColor.red
         speakBtn.setImage(UIImage(named: "microphone"), for: .normal)
         speakBtn.center = CGPoint(x: self.view.center.x, y: speakBtn.center.y)
-//        speakBtn.addTarget(self, action: #selector(self.backBtnPressed), for: .touchUpInside)
         speakBtn.setTitle("Speak", for: .normal)
         self.view.addSubview(speakBtn)
         SFSpeechRecognizer.requestAuthorization { (authStatus) in  //4

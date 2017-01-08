@@ -34,12 +34,6 @@ class ViewController: UIViewController {
         // create left menu layout
         leftMenu = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 2 / 10, height: self.view.frame.height))
         leftMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
-        // label : Tập viết chữ
-//        let label = UILabel(frame: CGRect(x: 0, y: 10, width: leftMenu.frame.width, height: 20))
-//        label.textAlignment = .center
-//        label.textColor = UIColor.purple
-//        label.text = "Writting game"
-//        leftMenu.addSubview(label)
         
         // Image chữ cái mẫu
         originalView = UIImageView(frame: CGRect(x: 5, y: 20, width: leftMenu.frame.width - 10, height: leftMenu.frame.width - 10))
@@ -85,14 +79,6 @@ class ViewController: UIViewController {
         greenBtn.addGestureRecognizer(changeColorGesture)
         penBtnArray.append(greenBtn)
         leftMenu.addSubview(greenBtn)
-        
-        
-        // Logo game
-//        let logoGame = UILabel(frame: CGRect(x: 0, y: leftMenu.frame.height - 50, width: leftMenu.frame.width, height: 40 ))
-//        logoGame.textAlignment = .center
-//        logoGame.textColor = UIColor.purple
-//        logoGame.text = "Logo game"
-//        leftMenu.addSubview(logoGame)
         
         self.view.addSubview(leftMenu)
         
