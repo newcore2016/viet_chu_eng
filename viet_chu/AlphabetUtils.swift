@@ -17,7 +17,6 @@ class AlphabetUtils {
         alphabet.unicode = unicode
         alphabet.path = AlphabetUtils.getCharacter(unicode)
         switch (unicode) {
-        // TODO create swtch - case for all characters
         case "a" :
             alphabet.pointArrays = AlphabetUtils.getAPoints()
             alphabet.arrows = AlphabetUtils.getAArows()

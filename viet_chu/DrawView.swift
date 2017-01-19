@@ -109,10 +109,8 @@ class DrawView: UIView {
             let newPoint = touches.first?.location(in: self)
             if originalPath.contains(newPoint!) {
                 insideCount += 1
-                print(insideCount)
             } else {
                 outsideCount += 1
-                print(outsideCount)
 
             }
             let line = Line(lastPoint, newPoint!, currenColor.cgColor)
@@ -124,7 +122,6 @@ class DrawView: UIView {
                     let point = pointArray[0]
                     if compareTwoPoint(point, newPoint!) {
                         removedPoint = CGPoint(x: point.x, y: point.y)
-                        print(removedPoint)
                         self.playBellSound()
                         let starView = UIImageView()
                         starView.center = lastPoint
@@ -171,10 +168,6 @@ class DrawView: UIView {
 //                            point = pointArray[0]
                             for p in pointArray {
                                 if !compareTwoPoint(removedPoint, p) && compareTwoPoint(p, newPoint!) {
-//                                    print(removedPoint)
-//                                    print(newPoint!)
-//                                    print(point)
-//                                    print(p)
                                     wrongMoveDetected = true
                                     touches.first?.view?.isUserInteractionEnabled = false
                                     lines = tmpLines
@@ -249,20 +242,13 @@ class DrawView: UIView {
                 synthesizer.speak(utterance)
                 self.originalPath = nil
                 // congratulation image showing
-                print("Final:")
-                print(insideCount)
-                print(outsideCount)
                 if Float(outsideCount) / Float(insideCount) > 0.5 {
-                    print("Average")
                     conImage.image = UIImage(named: "comeOn")
                 } else if Float(outsideCount) / Float(insideCount) > 0.35 {
-                    print("Fairy good")
                     conImage.image = UIImage(named: "fairyGood")
                 } else if Float(outsideCount) / Float(insideCount) > 0.2 {
-                    print("Good")
                     conImage.image = UIImage(named: "wow")
                 } else {
-                    print("Excellent")
                     conImage.image = UIImage(named: "smile2")
                 }
                 conImage.center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)

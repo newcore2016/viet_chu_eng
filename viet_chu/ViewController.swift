@@ -9,8 +9,9 @@
 import UIKit
 import CoreText
 import AVFoundation
+import GoogleMobileAds
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, GADInterstitialDelegate {
     
     var leftMenu: UIView! // left menu
     var rightMenu: UIView! // right menu
@@ -23,8 +24,14 @@ class ViewController: UIViewController {
     var penBtnArray = [UIButton]()
     var closeSound: AVAudioPlayer!
     
+    var interstitial : GADInterstitial!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // ads
+        interstitial = createAndLoadInterstitial()
+        
         drawView.frame = CGRect(x: self.view.frame.width * 2 / 10, y: 0, width: self.view.frame.width * 6.8 / 10, height: self.view.frame.height)
         self.drawView.backgroundColor = UIColor(patternImage: UIImage(named: "paper")!)
         drawView.setupSound()
@@ -131,6 +138,20 @@ class ViewController: UIViewController {
         self.view.addSubview(rightMenu)
     }
     
+    private func createAndLoadInterstitial() -> GADInterstitial? {
+        interstitial = GADInterstitial(adUnitID: "ca-app-pub-2978108908176817/6589091687")
+        
+        guard let interstitial = interstitial else {
+            return nil
+        }
+        
+        let request = GADRequest()
+        interstitial.load(request)
+        interstitial.delegate = self
+        
+        return interstitial
+    }
+    
     func nextBtnPressed() {
         if selectedIndex < alphabetArray.count - 1 {
             selectedIndex += 1
@@ -169,13 +190,21 @@ class ViewController: UIViewController {
         do {
             closeSound = try AVAudioPlayer(contentsOf: closeUrl)
             closeSound.play()
-        } catch (let err as NSError) {
-            print(err.debugDescription)
+        } catch ( _ as NSError) {
         }
     }
     
     // create draw view
     func createDrawView() {
+        // display ads
+        if interstitial.isReady {
+            let randomNum:UInt32 = arc4random_uniform(5)
+            // make random display ads
+            if randomNum == 1 {
+                interstitial.present(fromRootViewController: self)
+            }
+        }
+        
         drawView.isUserInteractionEnabled = true
         drawView.isCompleted = false
         drawView.character = alphabetArray[selectedIndex].unicode
@@ -227,6 +256,8 @@ class ViewController: UIViewController {
         
         drawView.setOriginal(tmpPath.cgPath)
         drawView.setNeedsDisplay()
+        // ads
+        interstitial = createAndLoadInterstitial()
     }
     
     func createOriginalView() {

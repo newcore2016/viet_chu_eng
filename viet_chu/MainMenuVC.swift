@@ -27,13 +27,6 @@ class MainMenuVC: UIViewController {
         
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        print("willAppear")
-////        numberBtn.frame.size = CGSize(width: self.view.frame.width , height: self.view.frame.height / 3)
-////        alphebetLowBtn.frame.size = CGSize(width: self.view.frame.width , height: self.view.frame.height / 3)
-////        alphabetUpBtn.frame.size = CGSize(width: self.view.frame.width , height: self.view.frame.height / 3)
-//    }
-    
     override func viewDidAppear(_ animated: Bool) {
         alphebetLowBtn.frame.size = CGSize(width: self.view.frame.width / 4 , height: self.view.frame.height / 3)
         alphebetLowBtn.center = CGPoint(x: self.view.frame.width / 3 - 20, y: self.view.frame.height / 3 - 20)
@@ -61,17 +54,7 @@ class MainMenuVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MenuViewController {
             destination.selectedTable = self.selectedTable
-        }    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        }
     }
-    */
 
 }

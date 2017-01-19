@@ -47,40 +47,6 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
         label.center = CGPoint(x: self.view.center.x, y: label.center.y)
         label.textAlignment = .center
         self.view.addSubview(label)
-        // speak button
-        speakBtn = UIButton(frame: CGRect(x: self.view.frame.width / 2, y: self.view.frame.height - 70, width: 80, height: 60))
-        speakBtn.addTarget(self, action: #selector(self.letSpeak), for: .touchUpInside)
-//        speakBtn.backgroundColor = UIColor.red
-        speakBtn.setImage(UIImage(named: "microphone"), for: .normal)
-        speakBtn.center = CGPoint(x: self.view.center.x, y: speakBtn.center.y)
-        speakBtn.setTitle("Speak", for: .normal)
-        self.view.addSubview(speakBtn)
-        SFSpeechRecognizer.requestAuthorization { (authStatus) in  //4
-            
-            var isButtonEnabled = false
-            
-            switch authStatus {  //5
-            case .authorized:
-                isButtonEnabled = true
-                
-            case .denied:
-                isButtonEnabled = false
-                print("User denied access to speech recognition")
-                
-            case .restricted:
-                isButtonEnabled = false
-                print("Speech recognition restricted on this device")
-                
-            case .notDetermined:
-                isButtonEnabled = false
-                print("Speech recognition not yet authorized")
-            }
-            
-            OperationQueue.main.addOperation() {
-//                self.microphoneButton.isEnabled = isButtonEnabled
-                print(isButtonEnabled)
-            }
-        }
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "theme1")!)
         // setup font
@@ -149,36 +115,54 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
         boardGame.isUserInteractionEnabled = true
         self.view.addSubview(boardGame)
         
-        
-        //ten game
-//        let name = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-//        name.center = CGPoint(x: 50, y: 30)
-//        name.textAlignment = .center
-//        name.text = "Game "
-//        self.view.addSubview(name)
-        
-        //logo
-//        let logo = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-//        logo.center = CGPoint(x: 50, y: UIScreen.main.bounds.height - 30)
-//        logo.textAlignment = .center
-//        logo.text = "Logo "
-//        self.view.addSubview(logo)
-        
         //play button
         let playBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.03 , width: 80, height: 50))
-//        playBtn.setTitle("Viết chữ", for: .normal)
-//        playBtn.backgroundColor = UIColor.purple
         playBtn.setImage(UIImage(named: "penButton2"), for: .normal)
         playBtn.addTarget(self, action: #selector(self.playBtnPressed), for: .touchUpInside)
         self.view.addSubview(playBtn)
         
         //back button
         backBtn = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 80, y: UIScreen.main.bounds.height * 0.85 , width: 80, height: 30))
-//        backBtn.setTitle("Quay lại", for: .normal)
-//        backBtn.backgroundColor = UIColor.purple
         backBtn.addTarget(self, action: #selector(self.backBtnPressed), for: .touchUpInside)
         backBtn.setImage(UIImage(named: "close1"), for: .normal)
-        self.view.bringSubview(toFront: speakBtn)
+        
+        // speak button
+        if selectedTable != Table.number {
+            SFSpeechRecognizer.requestAuthorization { (authStatus) in  //4
+                
+                var isButtonEnabled = false
+                
+                switch authStatus {  //5
+                case .authorized:
+                    isButtonEnabled = true
+                    
+                case .denied:
+                    isButtonEnabled = false
+                    print("User denied access to speech recognition")
+                    
+                case .restricted:
+                    isButtonEnabled = false
+                    print("Speech recognition restricted on this device")
+                    
+                case .notDetermined:
+                    isButtonEnabled = false
+                    print("Speech recognition not yet authorized")
+                }
+                
+                OperationQueue.main.addOperation() {
+                    //                self.microphoneButton.isEnabled = isButtonEnabled
+                    print(isButtonEnabled)
+                }
+            }
+            speakBtn = UIButton(frame: CGRect(x: self.view.frame.width / 2, y: self.view.frame.height - 70, width: 80, height: 60))
+            speakBtn.addTarget(self, action: #selector(self.letSpeak), for: .touchUpInside)
+            //        speakBtn.backgroundColor = UIColor.red
+            speakBtn.setImage(UIImage(named: "microphone"), for: .normal)
+            speakBtn.center = CGPoint(x: self.view.center.x, y: speakBtn.center.y)
+            speakBtn.setTitle("Speak", for: .normal)
+            self.view.addSubview(speakBtn)
+
+        }
         self.view.addSubview(backBtn)
     }
     
@@ -236,7 +220,6 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
         
         let audioSession = AVAudioSession.sharedInstance()
         do {
-//            try audioSession.setCategory(AVAudioSessionCategoryRecord)
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
             try audioSession.setMode(AVAudioSessionModeMeasurement)
             try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
@@ -250,10 +233,6 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
             fatalError("Audio engine has no input node")
         }
         
-//        guard let outputNode = audioEngine.outputNode else {
-//            fatalError("Audio engine has no input node")
-//        }
-        
         guard let recognitionRequest = recognitionRequest else {
             fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
         }
@@ -264,15 +243,8 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
             
             
             var isFinal = false
-//            var s = ""
-            if result?.transcriptions != nil {
-                for t in (result?.transcriptions)! {
-                    print(t.formattedString)
-                }
-            }
             if result != nil {
                 isFinal = (result?.isFinal)!
-//                self.label.text = result?.bestTranscription.formattedString
                 let tmp = result?.bestTranscription.formattedString
                 for view in self.boardGame.subviews {
                     let btn = view as! UIButton
@@ -297,15 +269,11 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
                     }
                 }
                 
-//                self.label.text = s
-//                print(s)
-                
             }
             
             if error != nil || isFinal {
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
-//                audioEngine.outputNode.removeTap(onBus: <#T##AVAudioNodeBus#>)
                 
                 self.recognitionRequest = nil
                 self.recognitionTask = nil
@@ -356,8 +324,7 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
         do {
             closeSound = try AVAudioPlayer(contentsOf: closeUrl)
             closeSound.play()
-        } catch (let err as NSError) {
-            print(err.debugDescription)
+        } catch ( _ as NSError) {
         }
     }
     
