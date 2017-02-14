@@ -54,16 +54,16 @@ class DrawView: UIView {
     }
     
     
-    var tmpPointArrays: [[CGPoint]]!
+//    var tmpPointArrays: [[CGPoint]]! // to resest points if wrong sequence
     var isNewTouch = false
     var removedPoint = CGPoint(x: 0, y: 0) // just removed point
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         isNewTouch = true
         // store tmp variables to backup if needed
-        tmpPointArrays = [[CGPoint]]()
-        for pArray in pointArrays {
-            tmpPointArrays.append(pArray)
-        }
+//        tmpPointArrays = [[CGPoint]]()
+//        for pArray in pointArrays {
+//            tmpPointArrays.append(pArray)
+//        }
         tmpInsideCount = insideCount
         tmpOutsideCount = outsideCount
         //-------------------
@@ -173,7 +173,7 @@ class DrawView: UIView {
                                     lines = tmpLines
                                     insideCount = tmpInsideCount
                                     outsideCount = tmpOutsideCount
-                                    pointArrays = tmpPointArrays!
+//                                    pointArrays = tmpPointArrays!
                                     emotionImage.center = CGPoint(x: 0, y: 0)
                                     emotionImage.frame.size = CGSize(width: 5, height: 5)
                                     emotionImage.image = UIImage(named: "wrong")
@@ -204,67 +204,105 @@ class DrawView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touches.first?.view?.isUserInteractionEnabled = true
         // if there is no pointArray removed
-        if pointArrays.count  == tmpPointArrays.count {
-            lines = tmpLines
-            insideCount = tmpInsideCount
-            outsideCount = tmpOutsideCount
-            pointArrays = tmpPointArrays!
-            if !wrongMoveDetected{
-                emotionImage.center = CGPoint(x: 0, y: 0)
-                emotionImage.frame.size = CGSize(width: 5, height: 5)
-                emotionImage.image = UIImage(named: "worry")
-                self.addSubview(emotionImage)
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.emotionImage.frame.size = CGSize(width: 100, height: 100)
-                    self.emotionImage.center = CGPoint(x: 50, y: 50)
-                }, completion: {
-                    finished in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                        self.emotionImage.removeFromSuperview()
-                    })
+//        if pointArrays.count  == tmpPointArrays.count {
+//            lines = tmpLines
+//            insideCount = tmpInsideCount
+//            outsideCount = tmpOutsideCount
+//            pointArrays = tmpPointArrays!
+//            if !wrongMoveDetected{
+//                emotionImage.center = CGPoint(x: 0, y: 0)
+//                emotionImage.frame.size = CGSize(width: 5, height: 5)
+//                emotionImage.image = UIImage(named: "worry")
+//                self.addSubview(emotionImage)
+//                UIView.animate(withDuration: 0.5, animations: {
+//                    self.emotionImage.frame.size = CGSize(width: 100, height: 100)
+//                    self.emotionImage.center = CGPoint(x: 50, y: 50)
+//                }, completion: {
+//                    finished in
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+//                        self.emotionImage.removeFromSuperview()
+//                    })
+//                })
+//
+//            }
+//            wrongMoveDetected = false
+//        }
+//        else {
+//            tmpLines = lines
+//            tmpInsideCount = insideCount
+//            tmpOutsideCount = outsideCount
+//            // if completed
+//            if pointArrays.count == 0{
+//                isCompleted = true
+//                self.isUserInteractionEnabled = false
+//                // talk
+//                let utterance = AVSpeechUtterance(string: character.lowercased())
+//                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+//                utterance.rate = 0.3
+//                synthesizer.stopSpeaking(at: .immediate)
+//                synthesizer.speak(utterance)
+//                self.originalPath = nil
+//                // congratulation image showing
+//                if Float(outsideCount) / Float(insideCount) > 0.5 {
+//                    conImage.image = UIImage(named: "comeOn")
+//                } else if Float(outsideCount) / Float(insideCount) > 0.35 {
+//                    conImage.image = UIImage(named: "fairyGood")
+//                } else if Float(outsideCount) / Float(insideCount) > 0.2 {
+//                    conImage.image = UIImage(named: "wow")
+//                } else {
+//                    conImage.image = UIImage(named: "smile2")
+//                }
+//                conImage.center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
+//                conImage.frame.size = CGSize(width: 5, height: 5)
+//                self.addSubview(conImage)
+//                UIView.animate(withDuration: 0.5, animations: {
+//                    self.conImage.frame.size = CGSize(width: 100, height: 100)
+//                }, completion: {
+//                    finished in
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+//                        self.conImage.removeFromSuperview()
+//                    })
+//                })
+//            }
+//        }
+        tmpLines = lines
+        tmpInsideCount = insideCount
+        tmpOutsideCount = outsideCount
+        // if completed
+        if pointArrays.count == 0{
+            isCompleted = true
+            self.isUserInteractionEnabled = false
+            
+            self.originalPath = nil
+            // congratulation image showing
+            if Float(outsideCount) / Float(insideCount) > 0.5 {
+                conImage.image = UIImage(named: "comeOn")
+            } else if Float(outsideCount) / Float(insideCount) > 0.35 {
+                conImage.image = UIImage(named: "fairyGood")
+            } else if Float(outsideCount) / Float(insideCount) > 0.2 {
+                conImage.image = UIImage(named: "wow")
+            } else {
+                conImage.image = UIImage(named: "smile2")
+            }
+            conImage.center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
+            conImage.frame.size = CGSize(width: 5, height: 5)
+            self.addSubview(conImage)
+            UIView.animate(withDuration: 0.5, animations: {
+                self.conImage.frame.size = CGSize(width: 100, height: 100)
+            }, completion: {
+                finished in
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                    self.conImage.removeFromSuperview()
+                    // talk
+                    let utterance = AVSpeechUtterance(string: self.character.lowercased())
+                    utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+                    utterance.rate = 0.3
+                    self.synthesizer.stopSpeaking(at: .immediate)
+                    self.synthesizer.speak(utterance)
                 })
+            })
+        }
 
-            }
-            wrongMoveDetected = false
-        }
-        else {
-            tmpLines = lines
-            tmpInsideCount = insideCount
-            tmpOutsideCount = outsideCount
-            // if completed
-            if pointArrays.count == 0{
-                isCompleted = true
-                self.isUserInteractionEnabled = false
-                // talk
-                let utterance = AVSpeechUtterance(string: character.lowercased())
-                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-                utterance.rate = 0.3
-                synthesizer.stopSpeaking(at: .immediate)
-                synthesizer.speak(utterance)
-                self.originalPath = nil
-                // congratulation image showing
-                if Float(outsideCount) / Float(insideCount) > 0.5 {
-                    conImage.image = UIImage(named: "comeOn")
-                } else if Float(outsideCount) / Float(insideCount) > 0.35 {
-                    conImage.image = UIImage(named: "fairyGood")
-                } else if Float(outsideCount) / Float(insideCount) > 0.2 {
-                    conImage.image = UIImage(named: "wow")
-                } else {
-                    conImage.image = UIImage(named: "smile2")
-                }
-                conImage.center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
-                conImage.frame.size = CGSize(width: 5, height: 5)
-                self.addSubview(conImage)
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.conImage.frame.size = CGSize(width: 100, height: 100)
-                }, completion: {
-                    finished in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                        self.conImage.removeFromSuperview()
-                    })
-                })
-            }
-        }
         self.setNeedsDisplay()
         
     }
