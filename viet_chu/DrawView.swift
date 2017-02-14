@@ -231,6 +231,7 @@ class DrawView: UIView {
             tmpLines = lines
             tmpInsideCount = insideCount
             tmpOutsideCount = outsideCount
+            // if completed
             if pointArrays.count == 0{
                 isCompleted = true
                 self.isUserInteractionEnabled = false
@@ -296,7 +297,7 @@ class DrawView: UIView {
             context!.strokePath()
         }
         
-        context!.setLineWidth(5)
+        context!.setLineWidth(12)
         context!.setStrokeColor(UIColor.blue.cgColor)
         var points = pointArrays.first
         var fPoint: CGPoint!
@@ -320,7 +321,7 @@ class DrawView: UIView {
         
         if fPoint != nil {
             context!.setStrokeColor(UIColor.purple.cgColor)
-            context!.setLineWidth(10)
+            context!.setLineWidth(16)
             context!.move(to: fPoint!)
             context!.addLine(to: fPoint!)
             context!.strokePath()

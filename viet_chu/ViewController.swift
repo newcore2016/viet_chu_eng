@@ -28,6 +28,9 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let bgView = UIImageView(frame: self.view.frame)
+        bgView.image = UIImage(named: "theme1")
+        self.view.addSubview(bgView)
         
         // ads
         interstitial = createAndLoadInterstitial()
@@ -40,7 +43,7 @@ class ViewController: UIViewController, GADInterstitialDelegate {
         
         // create left menu layout
         leftMenu = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 2 / 10, height: self.view.frame.height))
-        leftMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
+//        leftMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
         
         // Image chữ cái mẫu
         originalView = UIImageView(frame: CGRect(x: 5, y: 20, width: leftMenu.frame.width - 10, height: leftMenu.frame.width - 10))
@@ -91,7 +94,7 @@ class ViewController: UIViewController, GADInterstitialDelegate {
         
         // create right menu layout
         rightMenu = UIView(frame: CGRect(x: self.view.frame.width * 8.8 / 10, y: 0, width: self.view.frame.width * 1.2 / 10, height: self.view.frame.height))
-        rightMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
+//        rightMenu.backgroundColor = UIColor(patternImage: UIImage(named: "theme2")!)
         // button Viết lại
         let resetBtn = UIButton(frame: CGRect(x: 3, y: 10, width: rightMenu.frame.width - 10, height: 40 ))
         resetBtn.center = CGPoint(x: rightMenu.frame.width / 2, y: resetBtn.center.y)
@@ -170,7 +173,8 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     
     func talkBtnPressed() {
         // talk
-        let utterance = AVSpeechUtterance(string: alphabetArray[selectedIndex].unicode)
+        let s = alphabetArray[selectedIndex].unicode
+        let utterance = AVSpeechUtterance(string: s.lowercased())
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = 0.3
         synthesizer.stopSpeaking(at: .immediate)

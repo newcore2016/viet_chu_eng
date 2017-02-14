@@ -42,13 +42,19 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         speechRecognizer?.delegate = self
+        let bgView = UIImageView()
+        bgView.frame = self.view.frame
+        bgView.image = UIImage(named: "theme1")
+        self.view.addSubview(bgView)
+        
         label = UILabel(frame: CGRect(x: 0, y: 10, width: self.view.frame.width, height: 30))
         label.center = CGPoint(x: self.view.center.x, y: label.center.y)
         label.textAlignment = .center
         self.view.addSubview(label)
         
-        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "theme1")!)
+//        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "theme1")!)
         // setup font
         let cfURL = Bundle.main.url(forResource: "PENMP", withExtension: "TTF") as! CFURL
         CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
@@ -193,7 +199,7 @@ class MenuViewController: UIViewController, SFSpeechRecognizerDelegate {
         
         // talk
         let utterance = AVSpeechUtterance(string: (button.titleLabel?.text)!.lowercased())
-        utterance.voice = AVSpeechSynthesisVoice(language: "vi-VN")
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = 0.5
         synthesizer.stopSpeaking(at: .immediate)
         synthesizer.speak(utterance)

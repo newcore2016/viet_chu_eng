@@ -41,6 +41,7 @@
 		115E26A91DD3070F00A4D3E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11A247251DD31BAF006104F2 /* SVGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPath.h; sourceTree = "<group>"; };
 		11A247261DD31BAF006104F2 /* SVGPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGPath.swift; sourceTree = "<group>"; };
+		11D131871E4B0A4F00F362C2 /* viet_chu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = viet_chu.entitlements; sourceTree = "<group>"; };
 		11DB8DBF1DDD685F00F29A51 /* MainMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuVC.swift; sourceTree = "<group>"; };
 		11E3463B1DDC35A700CE66AA /* PENMP.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = PENMP.TTF; sourceTree = "<group>"; };
 		11F07A8C1DDDB98B00D931D1 /* EnumStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumStorage.swift; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 		115E26991DD3070F00A4D3E5 /* viet_chu */ = {
 			isa = PBXGroup;
 			children = (
+				11D131871E4B0A4F00F362C2 /* viet_chu.entitlements */,
 				113155CD1DDAB3CB0091A034 /* Schoolnet5HN.ttf */,
 				115E269A1DD3070F00A4D3E5 /* AppDelegate.swift */,
 				115E269C1DD3070F00A4D3E5 /* ViewController.swift */,
@@ -167,8 +169,13 @@
 				TargetAttributes = {
 					115E26961DD3070F00A4D3E5 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = E3N2LDL5Y6;
+						DevelopmentTeam = 227XM64776;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -397,10 +404,11 @@
 			baseConfigurationReference = 7F69E22EA66D70D88B96CD40 /* Pods-viet_chu.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = E3N2LDL5Y6;
+				CODE_SIGN_ENTITLEMENTS = viet_chu/viet_chu.entitlements;
+				DEVELOPMENT_TEAM = 227XM64776;
 				INFOPLIST_FILE = viet_chu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "efode.viet-chu";
+				PRODUCT_BUNDLE_IDENTIFIER = vn.efode.alphabet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -412,10 +420,11 @@
 			baseConfigurationReference = A0AF1BEC93049820333F6D25 /* Pods-viet_chu.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = E3N2LDL5Y6;
+				CODE_SIGN_ENTITLEMENTS = viet_chu/viet_chu.entitlements;
+				DEVELOPMENT_TEAM = 227XM64776;
 				INFOPLIST_FILE = viet_chu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "efode.viet-chu";
+				PRODUCT_BUNDLE_IDENTIFIER = vn.efode.alphabet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
